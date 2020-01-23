@@ -1,0 +1,106 @@
+[
+  {
+    "name":"Apathetic",
+    "bonus": "CON",
+    "negative": "DEX"
+  }, 
+  {
+    "name":"Brave",
+    "bonus": "STR",
+    "negative": "WIS"
+  }, 
+  {
+    "name":"Careful",
+    "bonus": "WIS",
+    "negative": "STR"
+  }, 
+  {
+    "name":"Cheerful",
+    "bonus": "CHA",
+    "negative": "STR"
+  }, 
+  {
+    "name":"Clumsy",
+    "bonus": "DEX",
+    "negative": "WIS"
+  }, 
+  {
+    "name":"Cocky",
+    "bonus": "STR",
+    "negative": "CHA"
+  }, 
+  {
+    "name":"Curious",
+    "bonus": "WIS",
+    "negative": "CON"
+  }, 
+  {
+    "name":"Dumb",
+    "bonus": "CHA",
+    "negative": "WIS"
+  },
+  {
+    "name":"Energetic",
+    "bonus": "DEX",
+    "negative": "CHA"
+  }, 
+  {
+    "name":"Grumpy",
+    "bonus": "CON",
+    "negative": "CHA"
+  }, 
+  {
+    "name":"Hardy",
+    "bonus": "AC",
+    "negative": "DEX"
+  }, 
+  {
+    "name":"Hasty",
+    "bonus": "DEX",
+    "negative": "CON"
+  
+  }, 
+  {
+    "name":"Naughty",
+    "bonus": "WIS",
+    "negative": "CHA"
+  }, 
+  {
+    "name":"Nimble",
+    "bonus": "AC",
+    "negative": "STR"
+  }, 
+  {
+    "name": "No Nature"
+  }, 
+  {
+    "name":"Rash",
+    "bonus": "STR",
+    "negative": "CON"
+  }, 
+  {
+    "name":"Reckless",
+    "bonus": "STR",
+    "negative": "DEX"
+  }, 
+  {
+    "name":"Relaxed",
+    "bonus": "CON",
+    "negative": "STR"
+  }, 
+  {
+    "name":"Sassy",
+    "bonus": "CHA",
+    "negative": "DEX"
+  }, 
+  {
+    "name":"Skittish",
+    "bonus": "DEX",
+    "negative": "STR"
+  },
+  {
+    "name":"Stubborn",
+    "bonus": "CON",
+    "negative": "WIS"
+  }
+]

@@ -1,0 +1,197 @@
+{
+  "character": {
+      "stats": {
+          "STR": 0,
+          "WIS": 0,
+          "CON": 0,
+          "CHA": 0,
+          "DEX": 0,
+          "INT": 0
+      },
+      "inventory": [
+          {
+            "name": "Pokeballs",
+            "description": "+0 to Capture Rolls",
+            "quantity": 5
+          },
+          {
+            "name": "Potion",
+            "description": "Restores 2d4+2 HP",
+            "quantity": 1
+          },
+          {
+            "name": "Pokedex",
+            "description": "A hand-held computer with an advanced camera and image recognition software given to trainers at the start of their journey. A trainer can use a bonus action to register a Pokémon (that hasn't fainted) within 50 feet using the Pokédex's scanner. Doing so registers the Pokémon on the Pokédex, and reveals the base SR and some brief facts about the species.",
+            "quantity": 1
+          },
+          {
+            "name": "Trainers License",
+            "description": "Also known as a Pokémon Handler's License or simply a Pokémon License, gives the bearer the right to own Pokemon.",
+            "quantity": 1
+          }
+      ],
+      "savingThrows": [
+          {
+              "name": "STR",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "DEX",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "CON",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "WIS",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "INT",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "CHA",
+              "prof": true,
+              "bonus": 0
+          }
+      ],
+      "trainerPaths": {
+          "Lvl15": " ",
+          "Lvl9": " ",
+          "Lvl2": " ",
+          "Lvl5": " "
+      },
+      "basics": {
+          "maxHp": 8,
+          "hitDice": "1d8",
+          "ac": 0,
+          "initiative": 0,
+          "currentHp": 8,
+          "inspiration": false,
+          "walkingSpeed": 30,
+          "proficiency": 2
+      },
+      "toolProf": [
+      ],
+      "info": {
+          "race": "Kantonian",
+          "money": "1500",
+          "level": "1",
+          "background": "Gym Challenger",
+          "name": "Red",
+          "alignment": "Lawful Good",
+          "exp": "0",
+          "class": "Pokemon Trainer",
+          "username": "Sam Oak"
+      },
+      "specializations": {
+          "Lvl7": " ",
+          "Lvl1": " ",
+          "Lvl18": " "
+      },
+      "details": {
+          "flaws": " ",
+          "battlePhrase": " ",
+          "ideals": " "
+      },
+      "skills": [
+          {
+              "name": "Acrobatics",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Animal Handling",
+              "prof": true,
+              "bonus": 0
+          },
+          {
+              "name": "Arcana",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Athletics",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Deception",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "History",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Insight",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Intimidation",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Investigation",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Medicine",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Nature",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Perception",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Performance",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Persuasion",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Religion",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Sleight of Hand",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Stealth",
+              "prof": false,
+              "bonus": 0
+          },
+          {
+              "name": "Survival",
+              "prof": false,
+              "bonus": 0
+          }
+      ]
+  }
+}
