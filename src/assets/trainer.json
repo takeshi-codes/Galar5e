@@ -8,28 +8,6 @@
           "DEX": 0,
           "INT": 0
       },
-      "inventory": [
-          {
-            "name": "Pokeballs",
-            "description": "+0 to Capture Rolls",
-            "quantity": 5
-          },
-          {
-            "name": "Potion",
-            "description": "Restores 2d4+2 HP",
-            "quantity": 1
-          },
-          {
-            "name": "Pokedex",
-            "description": "A hand-held computer with an advanced camera and image recognition software given to trainers at the start of their journey. A trainer can use a bonus action to register a Pokémon (that hasn't fainted) within 50 feet using the Pokédex's scanner. Doing so registers the Pokémon on the Pokédex, and reveals the base SR and some brief facts about the species.",
-            "quantity": 1
-          },
-          {
-            "name": "Trainers License",
-            "description": "Also known as a Pokémon Handler's License or simply a Pokémon License, gives the bearer the right to own Pokemon.",
-            "quantity": 1
-          }
-      ],
       "savingThrows": [
           {
               "name": "STR",
@@ -63,10 +41,10 @@
           }
       ],
       "trainerPaths": {
-          "Lvl15": " ",
-          "Lvl9": " ",
-          "Lvl2": " ",
-          "Lvl5": " "
+          "Lvl15": "",
+          "Lvl9": "",
+          "Lvl2": "",
+          "Lvl5": ""
       },
       "basics": {
           "maxHp": 8,
@@ -92,14 +70,14 @@
           "username": "Sam Oak"
       },
       "specializations": {
-          "Lvl7": " ",
-          "Lvl1": " ",
-          "Lvl18": " "
+          "Lvl7": "",
+          "Lvl1": "",
+          "Lvl18": ""
       },
       "details": {
-          "flaws": " ",
-          "battlePhrase": " ",
-          "ideals": " "
+          "flaws": "",
+          "battlePhrase": "",
+          "ideals": ""
       },
       "skills": [
           {

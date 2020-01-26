@@ -6,9 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { API } from "aws-amplify";
 
-import urls from '../utils/urls';
+import firebase from '../services/firebase';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,25 +48,33 @@ export default function CharacterList(props) {
 
   const deleteCharacter = useCallback(async (characterId, index) => {
     props.handleSpinner(true)
-    let apiName = urls.name; 
-    let path = urls.delete + characterId;
-    const options = {
-      headers: {
-        Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-      }
-    }
-    let pokemonPath = urls.deleteParty + characterId;
-    let pokedexPath = urls.deletePokedex + characterId;
-    await API.del(apiName, path, options)
-      .then(async () => {
-        await API.del(apiName, pokemonPath, options)
-          .then(async () => {
-            await API.del(apiName, pokedexPath, options)
-            .then(props.handleSpinner(false))
-            .catch(error => console.log(error))
-          })
-          .catch(error => console.log(error))
-      }).catch(error => console.log(error));
+    await firebase.collection('users')
+      .doc(props.currentUser.username)
+        .collection('trainers')
+          .doc(characterId)
+            .delete()
+              .then(() => {
+                props.handleSpinner(false)
+              })
+    // let apiName = urls.name; 
+    // let path = urls.delete + characterId;
+    // const options = {
+    //   headers: {
+    //     Authorization: props.currentUser.signInUserSession.idToken.jwtToken
+    //   }
+    // }
+    // let pokemonPath = urls.deleteParty + characterId;
+    // let pokedexPath = urls.deletePokedex + characterId;
+    // await API.del(apiName, path, options)
+    //   .then(async () => {
+    //     await API.del(apiName, pokemonPath, options)
+    //       .then(async () => {
+    //         await API.del(apiName, pokedexPath, options)
+    //         .then(props.handleSpinner(false))
+    //         .catch(error => console.log(error))
+    //       })
+    //       .catch(error => console.log(error))
+    //   }).catch(error => console.log(error));
   },[props])
   
   const renderCharacters = useCallback((list) => {
@@ -106,20 +113,23 @@ export default function CharacterList(props) {
 
 
   const fetchData = useCallback(async() => {
-    let apiName = urls.name;
-    let path = urls.getAll + props.currentUser.username;
-    const options = {
-      headers: {
-        Authorization: props.currentUser.signInUserSession.idToken.jwtToken
+    const trainersRef = await firebase.collection('users')
+      .doc(props.currentUser.username)
+        .collection('trainers')
+          .get()
+    const trainersList=[];
+    await trainersRef.docs.forEach(doc => {
+      const trainerData = {
+        id: doc.data().id,
+        name: doc.data().trainerSheet.info.name,
+        level: doc.data().trainerSheet.info.level,
       }
-    }
-    const apiTrainerList = await API.get(apiName, path, options); 
-    if (apiTrainerList.characters.length > 0){
-      const characters = renderCharacters(apiTrainerList.characters);
-      setRenderedCharacters(characters);
-    }      
+      trainersList.push(trainerData)
+    });
+    const characters = renderCharacters(trainersList);
+    setRenderedCharacters(characters);
     setLoading(false);
-  },[props.currentUser.username, renderCharacters, props.currentUser.signInUserSession.idToken.jwtToken]);
+  },[props.currentUser.username, renderCharacters]);
 
   useEffect(() => {
     if(loading){            

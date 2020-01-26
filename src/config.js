@@ -1,7 +1,7 @@
 export default {
   apiGateway: {
     REGION: "us-east-1",
-    URL: "https://api.galar5e.com/v1/"
+    URL: "https://5w9bv7p576.execute-api.us-east-1.amazonaws.com/dev/"
   },
   cognito: {
     REGION: "us-east-1",

@@ -19,17 +19,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function CharacterInfo(props) {
   const classes = useStyles();
-
-  const [trainerInfo, setTrainerInfo] = useState(props.info);
   const [textVariant, setTextVariant] = useState('outlined');
   const [inputProps, setInputProps] = useState({ readOnly: false });
-
-  const handleUpdateInfo = e => {
-    const updatedTrainer = {...trainerInfo};    
-    updatedTrainer[e.target.name] = e.target.value;
-    setTrainerInfo(updatedTrainer);
-    props.update(updatedTrainer);
-  }
 
   useEffect(() => {
     if (!props.isEditable) {
@@ -46,9 +37,9 @@ export default function CharacterInfo(props) {
       <CardContent className={classes.characterInfo} >
         <TextField 
           label="Character Name"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='name'
-          defaultValue={trainerInfo.name}
+          defaultValue={props.info.name}
           className={classes.infoInput}
           variant={textVariant}
           InputProps={inputProps}
@@ -56,9 +47,9 @@ export default function CharacterInfo(props) {
         <TextField 
           label="Level"
           type="number"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='level'
-          defaultValue={trainerInfo.level}
+          defaultValue={props.info.level}
           className={classes.infoInput}
           variant={textVariant}
           InputProps={inputProps}
@@ -66,26 +57,26 @@ export default function CharacterInfo(props) {
         <TextField
           className={classes.infoInput} 
           label="Class"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='class'
-          defaultValue={trainerInfo.class} 
+          defaultValue={props.info.class} 
           variant={textVariant}
           InputProps={inputProps}
         />
         <TextField
           className={classes.infoInput}  
           label="Background"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='background'
-          defaultValue={trainerInfo.background}
+          defaultValue={props.info.background}
           variant={textVariant}
           InputProps={inputProps}
         />
         <TextField 
           className={classes.infoInput} 
           label="Player Name"
-          defaultValue={trainerInfo.username} 
-          onChange={handleUpdateInfo} 
+          defaultValue={props.info.username} 
+          onChange={props.update} 
           name='username'
           variant={textVariant}
           InputProps={inputProps}
@@ -93,18 +84,18 @@ export default function CharacterInfo(props) {
         <TextField 
           className={classes.infoInput} 
           label="Race"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='race'
-          defaultValue={trainerInfo.race}
+          defaultValue={props.info.race}
           variant={textVariant}
           InputProps={inputProps}
         />
         <TextField  
           className={classes.infoInput} 
           label="Alignment"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='alignment'
-          defaultValue={trainerInfo.alignment}
+          defaultValue={props.info.alignment}
           variant={textVariant}
           InputProps={inputProps}
         />
@@ -112,9 +103,9 @@ export default function CharacterInfo(props) {
           className={classes.infoInput}  
           label="EXP"
           type="number"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='exp'
-          defaultValue={trainerInfo.exp}
+          defaultValue={props.info.exp}
           variant={textVariant}
           InputProps={inputProps}
         />
@@ -122,9 +113,9 @@ export default function CharacterInfo(props) {
           className="money-input"  
           label="Money"
           type="number"
-          onChange={handleUpdateInfo} 
+          onChange={props.update} 
           name='money'
-          defaultValue={trainerInfo.money}
+          defaultValue={props.info.money}
           variant={textVariant}
           InputProps={inputProps}
         />

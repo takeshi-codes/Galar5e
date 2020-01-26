@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import { API } from "aws-amplify";
+import firebase from '../../services/firebase'
 
 import urls from '../../utils/urls';
 
@@ -19,9 +20,9 @@ import ToolProfs from '../../components/CharacterSheet/ToolProfs/ToolProfs';
 import Party from '../../components/CharacterSheet/Pokemon/Party';
 import './CharacterSheet.css';
 import EmptySheet from '../../assets/trainer';
+import NewInventory from '../../assets/inventory';
 
 export default function CharacterSheet(props) {
-  
   const history = useHistory();
   const [isNew, setIsNew] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -32,8 +33,7 @@ export default function CharacterSheet(props) {
   const [pokemon, setPokemon] = useState(false);
   const [tools, setTools] = useState(false);
   const [trainer, setTrainer] = useState({});
-  const [trainerInfo, setTrainerInfo] = useState(null);
-  const [trainerDetails, setTrainerDetails] = useState(null);
+  const [trainerInventory, setTrainerInventory] = useState({});
   const [party, setParty] = useState({});
   const [pokedex, setPokedex] = useState({});
   const [isEditable, setIsEditable] = useState(false);
@@ -207,64 +207,39 @@ export default function CharacterSheet(props) {
       setIsNew(true);
       const newTrainer = EmptySheet.character;
       setTrainer(newTrainer);
+      setTrainerInventory(NewInventory);
       calculateBonuses(newTrainer);
       setLoading(false);
       setCurrentUser(props.currentUser);
     } else {
-      const apiName = urls.name;
-      const path = urls.get + props.match.params.id;
-      const options = {
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-      }
-      const newTrainer = await API.get(apiName, path, options);
-      setTrainer(newTrainer.character);
-      getPassives(newTrainer.character);
-      calculateBonuses(newTrainer.character);
-      setLoading(false);
-      setCurrentUser(props.currentUser);
+      const trainerRef = await firebase.collection('users')
+        .doc(props.currentUser.username)
+          .collection('trainers')
+            .doc(props.match.params.id)
+
+      trainerRef.get()
+        .then(doc => {
+          if (doc.exists) {
+            const firebaseTrainer = doc.data().trainerSheet;
+            setTrainer(firebaseTrainer);
+            setParty(doc.data().pokemon);
+            setPokedex(doc.data().pokedex);
+            setTrainerInventory(doc.data().inventory);
+            getPassives(firebaseTrainer);
+            calculateBonuses(firebaseTrainer);
+            setLoading(false);
+          } else {
+              console.log("No such document!");
+          }    
+      })
     }
     
   }, [
     calculateBonuses, 
     props.match.params.id, 
     props.location.pathname, 
-    props.currentUser
+    props.currentUser,
   ]);
-
-  const fetchPokemon = useCallback(async () => {
-    if (isNew === true){
-
-    } else {
-      const apiName = urls.name;
-      const pokemonPath = urls.getParty + props.match.params.id;
-      const options = {
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-      }
-      const trainerParty = await API.get(apiName, pokemonPath, options);
-      setParty(trainerParty.party);
-      setDrawerLoading(false);
-    }
-  }, [isNew, props.match.params.id, props.currentUser.signInUserSession.idToken.jwtToken])
-
-  const fetchPokedex = useCallback(async () => {
-    if (isNew === true){
-
-    } else {
-      const apiName = urls.name;
-      const pokedexPath = urls.getPokedex + props.match.params.id;
-      const options = {
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-      }
-      const apiPokedex = await API.get(apiName, pokedexPath, options);
-      setPokedex(apiPokedex.pokedex);
-    }
-  }, [isNew, props.match.params.id, props.currentUser.signInUserSession.idToken.jwtToken])
 
   useEffect(() => {
     if(loading){
@@ -333,7 +308,7 @@ export default function CharacterSheet(props) {
             Edit Trainer
           </Button>
         )}
-        <Button variant="outlined" color="primary" disableElevation onClick={(e) => toggleDrawer(e,"inventory",true)}>
+        <Button variant="outlined" color="primary" disabled={isEditable} disableElevation onClick={(e) => toggleDrawer(e,"inventory",true)}>
           Inventory
         </Button>
         <Button variant="outlined" color="primary" disableElevation onClick={(e) => toggleDrawer(e,"pokemon",true)}>
@@ -380,13 +355,8 @@ export default function CharacterSheet(props) {
       setInventory(status)
     }
     if(drawer === "pokemon"){
-      if (status === true){
-        setPokemon(status);
-        fetchPokemon();
-        fetchPokedex();
-      } else {
-        setPokemon(status);
-      }
+      setPokemon(status);
+      setDrawerLoading(false)
     }
     if(drawer === "tools"){
       setTools(status)
@@ -396,104 +366,48 @@ export default function CharacterSheet(props) {
   const updateTrainer = async () => {
     setUpdating(true);
     const updatedTrainer = {...trainer};
-    if (trainerInfo !== null){
-      updatedTrainer.info = trainerInfo;
-    }
-    if (trainerDetails !== null){
-      updatedTrainer.details = trainerDetails;
-    } 
-    let apiName = urls.name; 
-    let path = urls.update;
-    let apiBody = {
-        body: {
-          character: updatedTrainer
-        },
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-    };
-   await API.put(apiName, path, apiBody)
-      .then(response => {
-        setTrainer(response.character);
-        getPassives(response.character);
-        setUpdating(false);
-      })
-      .catch(error => {
-        console.log(error)
-      });
+    updatedTrainer.lastUpdate = new Date();  
+    const trainerRef = firebase.collection("users")
+      .doc(props.currentUser.username)
+        .collection('trainers')
+          .doc(props.match.params.id);
+          
+    await trainerRef.update({
+            trainerSheet: updatedTrainer,
+            inventory: trainerInventory
+        })
+        .then(() => {
+            setUpdating(false)
+        })
+        
   }
 
   const createTrainer = async () => {
     setUpdating(true);
     const newTrainer = trainer;
-    newTrainer.userid = props.currentUser.username
-    setTrainer(newTrainer)
-    const apiName = urls.name; 
-    const path = urls.create;
-    const partyPath = urls.createParty;
-    const pokedexPath = urls.createPokedex;
-    const apiBody = {
-        body: {
-          character: trainer
-        },
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-    };
-    await API.post(apiName, path, apiBody)
-      .then(async (response) => {
-        const trainerInfo = {
-          id: response.character.id,
-          userid: response.character.userid,
-        };
-        const newParty = {
-          party: [],
-          userid: trainerInfo.userid,
-          trainerid: trainerInfo.id,
-        };
-
-        const newPokedex = {
-          pokedex: [],
-          userid: trainerInfo.userid,
-          trainerid: trainerInfo.id,
-        };
-
-        const partyApiBody = {
-          body: {
-            party: newParty,
-          },
-          headers: {
-            Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-          }
-        };
-
-        const pokedexApiBody = {
-          body: {
-            pokedex: newPokedex,
-          },
-          headers: {
-            Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-          }
-        };
-        await API.post(apiName, partyPath, partyApiBody)
-          .then(async () => {
-            await API.post(apiName, pokedexPath, pokedexApiBody)
-              .then(() => {
-                history.push("/trainer-sheet/" + trainerInfo.id) 
-              })
-              .catch(error => { console.log(error) });
-          })
-          .catch(error => { console.log(error) });
-      }).catch(error => { console.log(error) });
+    newTrainer.dateCreated = new Date();
+    const newTrainerRef = firebase.collection("users").doc(props.currentUser.username).collection('trainers').doc()
+    console.log(newTrainerRef.id)
+    await newTrainerRef.set({
+      id: newTrainerRef.id,
+      trainerSheet: newTrainer,
+      inventory: trainerInventory,
+      pokemon: [],
+      pokedex: []
+    }).then(() => {
+      newTrainerRef.get().then(doc => {
+        history.push("/trainer-sheet/" + doc.data().id)
+      })
+    })
   }
 
   const removeItem = (item) => {
-    const updatedTrainer = trainer;
-    const index = updatedTrainer.inventory.indexOf(item);
+    const updatedInventory = [...trainerInventory]
+    const index = updatedInventory.indexOf(item);
     if (index > -1) {
-      updatedTrainer.inventory.splice(index, 1);
+      updatedInventory.splice(index, 1);
     }
-    setTrainer(updatedTrainer);
+    setTrainerInventory(updatedInventory);
     setInventory(false);
   }
 
@@ -507,12 +421,16 @@ export default function CharacterSheet(props) {
     setTools(false);
   }
 
-  const handleUpdateInfo = trainerInfo => {
-    setTrainerInfo(trainerInfo);
+  const handleUpdateInfo = e => {
+    const updatedTrainer = {...trainer};    
+    updatedTrainer.info[e.target.name] = e.target.value;
+    setTrainer(updatedTrainer);
   }
 
-  const handleUpdateDetails = trainerDetails => {
-    setTrainerDetails(trainerDetails);
+  const handleUpdateDetails = e => {
+    const updatedTrainer = {...trainer};    
+    updatedTrainer.details[e.target.name] = e.target.value;
+    setTrainer(updatedTrainer);  
   }
 
   const handleUpdateStats = e => {
@@ -567,29 +485,27 @@ export default function CharacterSheet(props) {
 
   const handleUpdatePokemon = async (trainerParty) => {
     setDrawerLoading(true);
-    const updatedParty = {...party};  
-    updatedParty.party = trainerParty;
-    const apiName = urls.name; 
-    const path = urls.updateParty;
-    const apiBody = {
-        body: {
-          party: updatedParty
-        },
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-    }
-    await API.put(apiName, path, apiBody).then(response => {
-      setParty(response.party);
-      setDrawerLoading(false);
-    }).catch(error => {
-        console.log(error.response)
-    });
+    const trainerRef = firebase.collection('users')
+      .doc(props.currentUser.username)
+        .collection('trainers')
+          .doc(props.match.params.id);
+
+      trainerRef.update({
+          pokemon: trainerParty,
+        })
+        .then(() => {
+          trainerRef.get()
+          .then(doc => {
+            const firebaseParty = doc.data().pokemon;
+            setParty(firebaseParty);
+            setDrawerLoading(false);
+          })
+        })
   }
 
   const handleAddPokemon = async(name) => {
     setDrawerLoading(true);
-    const updatedParty = {...party};
+    const updatedParty = [...party];
     const monsterManual = urls.monstermanual;
     const pokemonPath = urls.getPokemon + name;
     await API.get(monsterManual, pokemonPath).then(async (response) => {
@@ -649,23 +565,24 @@ export default function CharacterSheet(props) {
         }
       }
 
-      updatedParty.party.push(newPokemon);
-      const apiName = urls.name; 
-      const path = urls.updateParty;
-      const apiBody = {
-          body: {
-            party: updatedParty
-          },
-          headers: {
-            Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-          }
+      if (newPokemon.evolution === undefined){
+        newPokemon.evolution = null;
       }
-      await API.put(apiName, path, apiBody).then(response => {
-        setParty(response.party);
-        setDrawerLoading(false);
-      }).catch(error => {
-          console.log(error.response)
-      });
+      
+      updatedParty.push(newPokemon);
+
+      const trainerRef = firebase.collection('users')
+      .doc(props.currentUser.username)
+        .collection('trainers')
+          .doc(props.match.params.id);
+
+      trainerRef.update({
+          pokemon: updatedParty,
+        })
+        .then(() => {
+          setParty(updatedParty);
+          setDrawerLoading(false);
+        })
     }).catch(error => {
         console.log(error)
     });
@@ -673,28 +590,28 @@ export default function CharacterSheet(props) {
 
   const handleUpdatePokedex = async () => {
     setDrawerLoading(true);
-    const updatedPokedex = {...pokedex};
-    const apiName = urls.name;
-    const path = urls.updatePokedex;
-    const apiBody = {
-        body: {
-          pokedex: updatedPokedex
-        },
-        headers: {
-          Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-        }
-    }
-    await API.put(apiName, path, apiBody).then(response => {
-      setPokedex(response.pokedex);
-      setDrawerLoading(false);
-    }).catch(error => {
-        console.log(error)
-    });
+    const updatedPokedex = [...pokedex];
+    const trainerRef = firebase.collection('users')
+      .doc(props.currentUser.username)
+        .collection('trainers')
+          .doc(props.match.params.id);
+
+      trainerRef.update({
+        pokedex: updatedPokedex,
+        })
+        .then(() => {
+          trainerRef.get()
+          .then(doc => {
+            const firebasePokedex = doc.data().pokedex;
+            setPokedex(firebasePokedex);
+            setDrawerLoading(false);
+          })
+        })
   }
 
   const handleAddPokdex = newPokedex => {
-    const updatedPokedex = {...pokedex};
-    updatedPokedex.pokedex = newPokedex;
+    let updatedPokedex = [...pokedex]
+    updatedPokedex = newPokedex;
     setPokedex(updatedPokedex);
   }
 
@@ -709,16 +626,16 @@ export default function CharacterSheet(props) {
           anchor="right" 
           open={inventory}
           onClose={(e) => toggleDrawer(e,"inventory",false)}>
-            <Inventory inventory={trainer.inventory} remove={removeItem}/>
+            <Inventory inventory={trainerInventory} remove={removeItem} isEditable={isEditable}/>
         </Drawer>
         <Drawer anchor="right" open={pokemon} onClose={(e) => toggleDrawer(e,"pokemon",false)}>
           {drawerLoading ? 
             (<CircularProgress color="secondary"/>) : 
             (<Party 
-              party={party.party} 
+              party={party} 
               update={handleUpdatePokemon} 
               add={handleAddPokemon} 
-              pokedex={pokedex.pokedex}
+              pokedex={pokedex}
               updatePokedex={handleUpdatePokedex}
               addPokedex={handleAddPokdex} />)
           }
