@@ -20,16 +20,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function Details(props) {
   const classes = useStyles();
-  const [trainerDetails, setTrainerDetails] = useState(props.details);
   const [textVariant, setTextVariant] = useState('outlined');
   const [inputProps, setInputProps] = useState({ readOnly: false });
-
-  const handleUpdateInfo = e => {
-    const updatedTrainer = {...trainerDetails};    
-    updatedTrainer[e.target.name] = e.target.value;
-    setTrainerDetails(updatedTrainer);
-    props.update(updatedTrainer);
-  }
 
   useEffect(() => {
     if (!props.isEditable) {
@@ -47,7 +39,7 @@ export default function Details(props) {
         <CardContent className={classes.detailsCard}>
           <TextField 
             label='Ideals'
-            onChange={handleUpdateInfo} 
+            onChange={props.update} 
             name='ideals'
             defaultValue={props.details.ideals}
             className={classes.detailsInput}
@@ -56,7 +48,7 @@ export default function Details(props) {
           />
           <TextField 
             label='Battle Phrase'
-            onChange={handleUpdateInfo} 
+            onChange={props.update} 
             name='battlePhrase'
             defaultValue={props.details.battlePhrase}
             className={classes.detailsInput}
@@ -65,7 +57,7 @@ export default function Details(props) {
           />
           <TextField 
             label='Flaws'
-            onChange={handleUpdateInfo} 
+            onChange={props.update} 
             name='flaws'
             defaultValue={props.details.flaws}
             className={classes.detailsInput}

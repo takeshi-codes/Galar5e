@@ -19,9 +19,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 
-import { API } from "aws-amplify";
+import app from '../../../../services/firebase';
 
-import urls from '../../../../utils/urls';
 import LevelTable from '../../../../assets/levelTable.json';
 import NaturesTable from '../../../../assets/natures.json';
 import TmTable from '../../../../assets/tms.json';
@@ -96,12 +95,15 @@ export default function PokemonDetails(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const inputLabel = React.useRef(null);
 
-  const fetchData = useCallback(async (ability) => {
-    let apiName = urls.monstermanual;
-    let abilityPath = urls.getAbility + ability;
-    const apiAbility = await API.get(apiName, abilityPath);
-    setAbility(apiAbility.Ability.ABILITY_DESC);
-    setLoading(false);
+  const fetchData = useCallback(abilityName => {
+    app.database().ref('monstermanual/abilities').once('value', (snapshot) => {
+      const data = snapshot.val();
+      const responseAbility = data.find( ability => ability.name === abilityName );
+      if (responseAbility !== undefined){
+        setAbility(responseAbility.Description);
+        setLoading(false);
+      }
+    });
   }, []);
 
   const renderedNatures = (
@@ -171,12 +173,15 @@ export default function PokemonDetails(props) {
   const fetchAttackData = useCallback(async (expanded, move, index) => {
     if (expanded === true){
       setAttackLoading(true);
-      setExpanded(index)
-      let apiName = urls.monstermanual;
-      let attackPath = urls.getMove + move.name;
-      const apiAttack = await API.get(apiName, attackPath);
-      setAttackDetails(apiAttack.Move);
-      setAttackLoading(false);
+      setExpanded(index);
+      app.database().ref('monstermanual/moves').once('value', (snapshot) => {
+        const data = snapshot.val();
+        const responseMove = data.find( attack => attack.name === move.name );
+        if (responseMove !== undefined){
+          setAttackDetails(responseMove);
+          setAttackLoading(false);
+        }
+      });
     } else {
       setExpanded('')
     }
@@ -238,49 +243,49 @@ export default function PokemonDetails(props) {
                   />
                   <TextField 
                     label="Max PP"
-                    defaultValue={attackDetails.PP}
+                    defaultValue={attackDetails.pp}
                     InputProps={{
                       readOnly: true,
                     }}
                   />
                   <TextField 
                     label="Move Type"
-                    defaultValue={attackDetails.MOVE_TYPE}
+                    defaultValue={attackDetails.type}
                     InputProps={{
                       readOnly: true,
                     }}
                   />
                   <TextField 
                     label="Move Time"
-                    defaultValue={attackDetails.MOVE_TIME}
+                    defaultValue={attackDetails.moveTime}
                     InputProps={{
                       readOnly: true,
                     }}
                   />
                   <TextField 
                     label="Duration"
-                    defaultValue={attackDetails.DURATION}
+                    defaultValue={attackDetails.duration}
                     InputProps={{
                       readOnly: true,
                     }}
                   />
                   <TextField 
                     label="Range"
-                    defaultValue={attackDetails.RANGE}
+                    defaultValue={attackDetails.range}
                     InputProps={{
                       readOnly: true,
                     }}
                   />
                   <TextField 
                     label="Move Power"
-                    defaultValue={attackDetails.MOVE_POWER}
+                    defaultValue={attackDetails.movePower}
                     InputProps={{
                       readOnly: true,
                     }}
                   />
                 </div>
                 <Typography variant="body2" className={classes.attackLabel}>
-                  {attackDetails.DESCRIPTION}
+                  {attackDetails.description}
                 </Typography>
                 { move.name !== 'Struggle' ? (               
                   <Tooltip
@@ -327,25 +332,28 @@ export default function PokemonDetails(props) {
   const handleAddAttack = async (e) => {
     setLoading(true);
     setNewAttack(e.target.value);
-
-    let apiName = urls.monstermanual;
-    let attackPath = urls.getMove + e.target.value;
-    const apiAttack = await API.get(apiName, attackPath);
-    const newMove = {
-      name: apiAttack.Move.MOVE_NAME,
-      pp: apiAttack.Move.PP
-    }
+    app.database().ref('monstermanual/moves').once('value', (snapshot) => {
+      const data = snapshot.val();
+      const responseMove = data.find( attack => attack.name === e.target.value );
+      if (responseMove !== undefined){
+        const newMove = {
+          name: responseMove.name,
+          pp: responseMove.pp
+        }
+        
+        const newPokemon = {...pokemon}
+        const attacks = newPokemon.moves.current;
+        attacks.push(newMove);
+        newPokemon.moves.current = attacks;
+        setPokemon(newPokemon);
+        setAddMoves(false);
+        setAddLearnType(false);
+        setLearnType('');
+        setNewAttack('');
+        setExpanded('');
+      }
+    });
     
-    const newPokemon = {...pokemon}
-    const attacks = newPokemon.moves.current;
-    attacks.push(newMove);
-    newPokemon.moves.current = attacks;
-    setPokemon(newPokemon);
-    setAddMoves(false);
-    setAddLearnType(false);
-    setLearnType('');
-    setNewAttack('');
-    setExpanded('');
   }
 
   const renderLearnType = addLearnType ? 

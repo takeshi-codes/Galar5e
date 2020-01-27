@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Auth } from "aws-amplify";
+import { AuthProvider } from './Auth';
+import app from './services/firebase';
 
 import Routes from "./Routes";
 
 import Header from './components/Header/Header';
-
-import './App.css';
 
 const theme = createMuiTheme({
   palette: {
@@ -21,39 +20,31 @@ const theme = createMuiTheme({
   },
 });
 
-function App(props) {
-  const [isAuthenticated, userHasAuthenticated] = useState(false);
+const  App = (props) => {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
-
 
   useEffect(() => {
     onLoad();
   }, []);
 
-  const onLoad = async() => {
+  const onLoad = () => {
     try {
-      await Auth.currentSession();
-      userHasAuthenticated(true);
-      await Auth.currentAuthenticatedUser({
-      }).then(user => {
-        setCurrentUser(user);
+      setLoading(true);
+      app.auth().onAuthStateChanged(user => {
+        setLoading(false);
       })
-      .catch(err => console.log(err));
     }
     catch(e) {
       if (e !== 'No current user') {
         alert(e);
       }
-    }
-  
+    }  
     setIsAuthenticating(false);
   }
 
   const handleLogout = async() => {
-    await Auth.signOut();  
-    userHasAuthenticated(false);
+    await app.auth().signOut();
     props.history.push("/login");
   }
 
@@ -61,19 +52,22 @@ function App(props) {
     setLoading(status);
   }
 
-
   return (
     !isAuthenticating && (
       <div className="App">
-        <ThemeProvider theme={theme}>
-          <Header auth={isAuthenticated} logout={handleLogout}/>
-          { loading ? (
-            <CircularProgress color="secondary"/>
-          ): 
-          (
-            <Routes appProps={{ isAuthenticated, userHasAuthenticated, currentUser, handleSpinner }} />
-          )}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider theme={theme}>
+            { loading ? (
+              <CircularProgress color="secondary"/>
+            ): 
+            (
+              <div>
+                <Header logout={handleLogout}/>
+                <Routes appProps={{handleSpinner}}/>
+              </div>
+            )}
+          </ThemeProvider>
+        </AuthProvider>
       </div>
     )
   );
