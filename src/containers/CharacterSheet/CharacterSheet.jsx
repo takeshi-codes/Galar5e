@@ -509,7 +509,7 @@ export default function CharacterSheet(props) {
       const data = snapshot.val();
       const responsePokemon = data.find( pokemon => pokemon.name === name );
       if (responsePokemon !== undefined) {
-
+        console.log(responsePokemon)
         const startingMoves = [];
         const first4Moves = responsePokemon.Moves["Starting Moves"].slice(0,4);
         first4Moves.forEach(move => {
@@ -522,12 +522,12 @@ export default function CharacterSheet(props) {
         let newPokemon = {
           maxHp: responsePokemon.HP,
           currentHp: responsePokemon.HP,
-          hitDice: responsePokemon.HitDice,
-          level: responsePokemon.MinLvlFd,
+          hitDice: responsePokemon['Hit Dice'],
+          level: responsePokemon['MIN LVL FD'],
           nature: "No Nature",
           loyalty: 0, 
           evolution: responsePokemon.Evolve,
-          minLvlFound: responsePokemon.MinLvlFd,
+          minLvlFound: responsePokemon['MIN LVL FD'],
           type: responsePokemon.Type,
           walkingSpeed: responsePokemon.WSp,
           flyingSpeed: responsePokemon.FSp,
@@ -537,6 +537,7 @@ export default function CharacterSheet(props) {
           stats: responsePokemon.attributes,
           armorClass: responsePokemon.AC,
           proficiencies: responsePokemon.Skill,
+          senses: responsePokemon.Senses,
           moves:{
             tm: responsePokemon.Moves.TM,
             current: startingMoves,
@@ -575,10 +576,14 @@ export default function CharacterSheet(props) {
         if (newPokemon.flyingSpeed === undefined){
           newPokemon.flyingSpeed = null;
         }
+
         if (newPokemon.swimmingSpeed === undefined){
           newPokemon.swimmingSpeed = null;
         }
-        
+
+        if (newPokemon.senses === undefined){
+          newPokemon.senses = null;
+        }
         updatedParty.push(newPokemon);
         const trainerRef = app.firestore().collection('users')
         .doc(currentUser.uid)
