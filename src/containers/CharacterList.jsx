@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback }  from 'react';
+import React, { useState, useEffect, useCallback, useContext }  from 'react';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -7,7 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import firebase from '../services/firebase';
+import app from '../services/firebase';
+import { AuthContext } from '../Auth';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function CharacterList(props) {
+  const { currentUser } = useContext(AuthContext);
   const classes = useStyles();  
   const [loading, setLoading] = useState(true);
   const [renderedCharacters, setRenderedCharacters] = useState([]);
@@ -46,36 +48,20 @@ export default function CharacterList(props) {
     history.push("/create-trainer")
   }
 
-  const deleteCharacter = useCallback(async (characterId, index) => {
-    props.handleSpinner(true)
-    await firebase.collection('users')
-      .doc(props.currentUser.username)
+  const deleteCharacter = useCallback(async (characterId) => {
+    props.appProps.handleSpinner(true)
+    if (currentUser !== undefined){
+      app.firestore().collection('users')
+      .doc(currentUser.uid)
         .collection('trainers')
           .doc(characterId)
             .delete()
               .then(() => {
-                props.handleSpinner(false)
+                props.appProps.handleSpinner(false)
               })
-    // let apiName = urls.name; 
-    // let path = urls.delete + characterId;
-    // const options = {
-    //   headers: {
-    //     Authorization: props.currentUser.signInUserSession.idToken.jwtToken
-    //   }
-    // }
-    // let pokemonPath = urls.deleteParty + characterId;
-    // let pokedexPath = urls.deletePokedex + characterId;
-    // await API.del(apiName, path, options)
-    //   .then(async () => {
-    //     await API.del(apiName, pokemonPath, options)
-    //       .then(async () => {
-    //         await API.del(apiName, pokedexPath, options)
-    //         .then(props.handleSpinner(false))
-    //         .catch(error => console.log(error))
-    //       })
-    //       .catch(error => console.log(error))
-    //   }).catch(error => console.log(error));
-  },[props])
+    }
+    
+  },[props, currentUser])
   
   const renderCharacters = useCallback((list) => {
     const characters = list.map((character, index) =>{
@@ -112,30 +98,45 @@ export default function CharacterList(props) {
   }, [classes.button, classes.root, navToTrainerPage, classes.createButton, deleteCharacter])
 
 
-  const fetchData = useCallback(async() => {
-    const trainersRef = await firebase.collection('users')
-      .doc(props.currentUser.username)
-        .collection('trainers')
-          .get()
-    const trainersList=[];
-    await trainersRef.docs.forEach(doc => {
-      const trainerData = {
-        id: doc.data().id,
-        name: doc.data().trainerSheet.info.name,
-        level: doc.data().trainerSheet.info.level,
-      }
-      trainersList.push(trainerData)
-    });
-    const characters = renderCharacters(trainersList);
-    setRenderedCharacters(characters);
-    setLoading(false);
-  },[props.currentUser.username, renderCharacters]);
+  const fetchData = useCallback(() => {
+    if (currentUser !== undefined){
+      const usersRef = app.firestore().collection('users').doc(currentUser.uid);
+      usersRef.get()
+        .then(doc => {
+          if(doc.exists){
+            const trainersList=[];
+            app.firestore().collection('users')
+              .doc(currentUser.uid)
+                .collection('trainers')
+                .get()
+                  .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                      const trainerData = {
+                        id: doc.data().id,
+                        name: doc.data().trainerSheet.info.name,
+                        level: doc.data().trainerSheet.info.level,
+                      }
+                      trainersList.push(trainerData)
+                    });
+                    const characters = renderCharacters(trainersList);
+                    setRenderedCharacters(characters);
+                    setLoading(false);
+                  })          
+            
+          } else {
+            usersRef.set({})
+            setRenderedCharacters(null);
+            setLoading(false);
+          }
+        })
+    }
+  },[currentUser, renderCharacters]);
 
   useEffect(() => {
-    if(loading){            
+    if(loading && currentUser!== undefined){
       fetchData();
     }    
-  }, [loading, fetchData]);
+  }, [loading, fetchData, currentUser]);
 
   if (loading) {
     return (

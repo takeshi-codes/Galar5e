@@ -1,9 +1,11 @@
-import React  from 'react';
+import React, { useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
+import { AuthContext } from '../Auth';
 
 import Credits from './Credits';
 
@@ -23,7 +25,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-function Home(props) {
+const Home = (props) => {
+  const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
 
   const navToSignup = () => {
@@ -48,7 +51,7 @@ function Home(props) {
             Galar5e is able to track your character sheets, items for each character, as well as all of your Pokemon!
             More is coming soon, so be sure to check back for details!
           </Typography>       
-          {props.isAuthenticated ? 
+          {currentUser ? 
             (<div>
             </div>) : 
             (<div>

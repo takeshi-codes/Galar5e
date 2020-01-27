@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback }  from 'react';
+import React, { useState, useEffect, useCallback, useContext }  from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
 import { API } from "aws-amplify";
-import firebase from '../../services/firebase'
+import app from '../../services/firebase';
+import { AuthContext } from '../../Auth';
 
 import urls from '../../utils/urls';
 
@@ -23,9 +24,9 @@ import EmptySheet from '../../assets/trainer';
 import NewInventory from '../../assets/inventory';
 
 export default function CharacterSheet(props) {
+  const { currentUser } = useContext(AuthContext);
   const history = useHistory();
   const [isNew, setIsNew] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [drawerLoading, setDrawerLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -210,35 +211,36 @@ export default function CharacterSheet(props) {
       setTrainerInventory(NewInventory);
       calculateBonuses(newTrainer);
       setLoading(false);
-      setCurrentUser(props.currentUser);
     } else {
-      const trainerRef = await firebase.collection('users')
-        .doc(props.currentUser.username)
-          .collection('trainers')
-            .doc(props.match.params.id)
+      if (currentUser !== undefined) {
+          const trainerRef = await app.firestore().collection('users')
+          .doc(currentUser.uid)
+            .collection('trainers')
+              .doc(props.match.params.id)
 
-      trainerRef.get()
-        .then(doc => {
-          if (doc.exists) {
-            const firebaseTrainer = doc.data().trainerSheet;
-            setTrainer(firebaseTrainer);
-            setParty(doc.data().pokemon);
-            setPokedex(doc.data().pokedex);
-            setTrainerInventory(doc.data().inventory);
-            getPassives(firebaseTrainer);
-            calculateBonuses(firebaseTrainer);
-            setLoading(false);
-          } else {
-              console.log("No such document!");
-          }    
-      })
+        trainerRef.get()
+          .then(doc => {
+            if (doc.exists) {
+              const firebaseTrainer = doc.data().trainerSheet;
+              setTrainer(firebaseTrainer);
+              setParty(doc.data().pokemon);
+              setPokedex(doc.data().pokedex);
+              setTrainerInventory(doc.data().inventory);
+              getPassives(firebaseTrainer);
+              calculateBonuses(firebaseTrainer);
+              setLoading(false);
+            } else {
+                console.log("No such document!");
+            }    
+        })
+      }
     }
     
   }, [
     calculateBonuses, 
     props.match.params.id, 
     props.location.pathname, 
-    props.currentUser,
+    currentUser,
   ]);
 
   useEffect(() => {
@@ -308,13 +310,13 @@ export default function CharacterSheet(props) {
             Edit Trainer
           </Button>
         )}
-        <Button variant="outlined" color="primary" disabled={isEditable} disableElevation onClick={(e) => toggleDrawer(e,"inventory",true)}>
+        <Button variant="outlined" color="primary" disabled={!isEditable} disableElevation onClick={(e) => toggleDrawer(e,"inventory",true)}>
           Inventory
         </Button>
-        <Button variant="outlined" color="primary" disableElevation onClick={(e) => toggleDrawer(e,"pokemon",true)}>
+        <Button variant="outlined" color="primary" disabled={!isEditable} disableElevation onClick={(e) => toggleDrawer(e,"pokemon",true)}>
           Pokemon
         </Button>
-        <Button variant="outlined" color="primary" disableElevation onClick={(e) => toggleDrawer(e,"tools",true)}>
+        <Button variant="outlined" color="primary" disabled={!isEditable} disableElevation onClick={(e) => toggleDrawer(e,"tools",true)}>
           Tool Proficiencies
         </Button>
         <Tooltip title="This will discard all unsaved changes">
@@ -363,22 +365,23 @@ export default function CharacterSheet(props) {
     }
   }
 
-  const updateTrainer = async () => {
+  const updateTrainer = () => {
     setUpdating(true);
     const updatedTrainer = {...trainer};
     updatedTrainer.lastUpdate = new Date();  
-    const trainerRef = firebase.collection("users")
-      .doc(props.currentUser.username)
+    const trainerRef = app.firestore().collection("users")
+      .doc(currentUser.uid)
         .collection('trainers')
           .doc(props.match.params.id);
           
-    await trainerRef.update({
-            trainerSheet: updatedTrainer,
-            inventory: trainerInventory
-        })
-        .then(() => {
-            setUpdating(false)
-        })
+    trainerRef.update({
+      trainerSheet: updatedTrainer,
+      inventory: trainerInventory
+    })
+    .then(() => {
+      setIsEditable(false)
+      setUpdating(false)
+    })
         
   }
 
@@ -386,8 +389,7 @@ export default function CharacterSheet(props) {
     setUpdating(true);
     const newTrainer = trainer;
     newTrainer.dateCreated = new Date();
-    const newTrainerRef = firebase.collection("users").doc(props.currentUser.username).collection('trainers').doc()
-    console.log(newTrainerRef.id)
+    const newTrainerRef = app.firestore().collection("users").doc(currentUser.uid).collection('trainers').doc()
     await newTrainerRef.set({
       id: newTrainerRef.id,
       trainerSheet: newTrainer,
@@ -485,8 +487,8 @@ export default function CharacterSheet(props) {
 
   const handleUpdatePokemon = async (trainerParty) => {
     setDrawerLoading(true);
-    const trainerRef = firebase.collection('users')
-      .doc(props.currentUser.username)
+    const trainerRef = app.firestore().collection('users')
+      .doc(currentUser.uid)
         .collection('trainers')
           .doc(props.match.params.id);
 
@@ -571,8 +573,8 @@ export default function CharacterSheet(props) {
       
       updatedParty.push(newPokemon);
 
-      const trainerRef = firebase.collection('users')
-      .doc(props.currentUser.username)
+      const trainerRef = app.firestore().collection('users')
+      .doc(currentUser.uid)
         .collection('trainers')
           .doc(props.match.params.id);
 
@@ -591,8 +593,8 @@ export default function CharacterSheet(props) {
   const handleUpdatePokedex = async () => {
     setDrawerLoading(true);
     const updatedPokedex = [...pokedex];
-    const trainerRef = firebase.collection('users')
-      .doc(props.currentUser.username)
+    const trainerRef = app.firestore().collection('users')
+      .doc(currentUser.uid)
         .collection('trainers')
           .doc(props.match.params.id);
 
