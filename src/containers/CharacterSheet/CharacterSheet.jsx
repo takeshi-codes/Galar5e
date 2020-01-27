@@ -4,11 +4,8 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Tooltip from '@material-ui/core/Tooltip';
-import { API } from "aws-amplify";
 import app from '../../services/firebase';
 import { AuthContext } from '../../Auth';
-
-import urls from '../../utils/urls';
 
 import StatBlock from '../../components/CharacterSheet/StatBlock/StatBlock';
 import CharacterInfo from '../../components/CharacterSheet/CharacterInfo/CharacterInfo';
@@ -508,85 +505,100 @@ export default function CharacterSheet(props) {
   const handleAddPokemon = async(name) => {
     setDrawerLoading(true);
     const updatedParty = [...party];
-    const monsterManual = urls.monstermanual;
-    const pokemonPath = urls.getPokemon + name;
-    await API.get(monsterManual, pokemonPath).then(async (response) => {
-      const apiPokemon = response.Pokemon;
-
-      const newStartingMoves = [];
-      apiPokemon.MOVES["Starting Moves"].forEach(move => {
-        const newMove = move.replace('-', ' ');
-        newStartingMoves.push(newMove);
-      })
-
-      const startingMoves = [];
-      const first4Moves = newStartingMoves.slice(0,4);
-      first4Moves.forEach(move => {
-        startingMoves.push({
-          name: move,
-          pp: 0
+    app.database().ref('monstermanual/pokemon').once('value', (snapshot) => {
+      const data = snapshot.val();
+      const responsePokemon = data.find( pokemon => pokemon.name === name );
+      if (responsePokemon !== undefined) {
+        console.log(responsePokemon)
+        const newStartingMoves = [];
+        responsePokemon.Moves["Starting Moves"].forEach(move => {
+          const newMove = move.replace('-', ' ');
+          newStartingMoves.push(newMove);
         })
-      });
-      
-      let newPokemon = {
-        maxHp: apiPokemon.HP,
-        currentHp: apiPokemon.HP,
-        hitDice: apiPokemon.HIT_DICE,
-        level: apiPokemon.MIN_LVL_FOUND,
-        nature: "No Nature",
-        loyalty: 0, 
-        evolution: apiPokemon.EVOLUTION,
-        minLvlFound: apiPokemon.MIN_LVL_FOUND,
-        type: apiPokemon.TYPE,
-        walkingSpeed: apiPokemon.WALKING_SPEED,
-        savingThrows: apiPokemon.SAVING_THROWS,
-        abilities: apiPokemon.ABILITIES,
-        stats: apiPokemon.STATS,
-        armorClass: apiPokemon.ARMOR_CLASS,
-        proficiencies: apiPokemon.SKILL_PROFICIENCIES,
-        moves:{
-          tm: apiPokemon.MOVES.TM,
-          current: startingMoves,
-          startingMoves: newStartingMoves,
-          level: apiPokemon.MOVES.Level,
-        },
-        nickname: apiPokemon.NAME,
-        name: apiPokemon.NAME,
-        speciesRating: apiPokemon.SPECIES_RATING,
-        exp: 0,
-        currentAbility: apiPokemon.ABILITIES[0],
-        hiddenAbility: apiPokemon.HIDDEN_ABILITY,
-        status: {
-          confused: false,
-          paralyzed: false,
-          frozen: false,
-          poisoned: false,
-          asleep: false,
-          flinched: false,
-          burned: false
+
+        const startingMoves = [];
+        const first4Moves = newStartingMoves.slice(0,4);
+        first4Moves.forEach(move => {
+          startingMoves.push({
+            name: move,
+            pp: 0
+          })
+        });
+
+        let newPokemon = {
+          maxHp: responsePokemon.HP,
+          currentHp: responsePokemon.HP,
+          hitDice: responsePokemon.HitDice,
+          level: responsePokemon.MinLvlFd,
+          nature: "No Nature",
+          loyalty: 0, 
+          evolution: responsePokemon.Evolve,
+          minLvlFound: responsePokemon.MinLvlFd,
+          type: responsePokemon.Type,
+          walkingSpeed: responsePokemon.WSp,
+          flyingSpeed: responsePokemon.FSp,
+          swimmingSpeed: responsePokemon.SSp,
+          savingThrows: responsePokemon.saving_throws,
+          abilities: responsePokemon.Abilities,
+          stats: responsePokemon.attributes,
+          armorClass: responsePokemon.AC,
+          proficiencies: responsePokemon.Skill,
+          moves:{
+            tm: responsePokemon.Moves.TM,
+            current: startingMoves,
+            startingMoves: newStartingMoves,
+            level: responsePokemon.Moves.Level,
+          },
+          nickname: responsePokemon.name,
+          name: responsePokemon.name,
+          speciesRating: responsePokemon.SR,
+          exp: 0,
+          currentAbility: responsePokemon.Abilities[0],
+          hiddenAbility: responsePokemon.HiddenAbility,
+          status: {
+            confused: false,
+            paralyzed: false,
+            frozen: false,
+            poisoned: false,
+            asleep: false,
+            flinched: false,
+            burned: false
+          }
         }
+
+        if (newPokemon.evolution === undefined){
+          newPokemon.evolution = null;
+        }
+
+        if (newPokemon.hiddenAbility === undefined){
+          newPokemon.hiddenAbility = null;
+        }
+
+        if (newPokemon.walkingSpeed === undefined){
+          newPokemon.walkingSpeed = null;
+        }
+        
+        if (newPokemon.flyingSpeed === undefined){
+          newPokemon.flyingSpeed = null;
+        }
+        if (newPokemon.swimmingSpeed === undefined){
+          newPokemon.swimmingSpeed = null;
+        }
+        
+        updatedParty.push(newPokemon);
+        const trainerRef = app.firestore().collection('users')
+        .doc(currentUser.uid)
+          .collection('trainers')
+            .doc(props.match.params.id);
+
+        trainerRef.update({
+            pokemon: updatedParty,
+          })
+          .then(() => {
+            setParty(updatedParty);
+            setDrawerLoading(false);
+          })
       }
-
-      if (newPokemon.evolution === undefined){
-        newPokemon.evolution = null;
-      }
-      
-      updatedParty.push(newPokemon);
-
-      const trainerRef = app.firestore().collection('users')
-      .doc(currentUser.uid)
-        .collection('trainers')
-          .doc(props.match.params.id);
-
-      trainerRef.update({
-          pokemon: updatedParty,
-        })
-        .then(() => {
-          setParty(updatedParty);
-          setDrawerLoading(false);
-        })
-    }).catch(error => {
-        console.log(error)
     });
   }
 
