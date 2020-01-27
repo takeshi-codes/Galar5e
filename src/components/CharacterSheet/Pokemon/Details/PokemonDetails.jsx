@@ -158,10 +158,6 @@ export default function PokemonDetails(props) {
       }
     }
 
-    mergedNames.forEach((move, index, namesArray) => {
-      namesArray[index] = move.replace('-', ' ');
-    });
-
     const movesArray = mergedNames.map((attack, index) => {
       return(
         <MenuItem value={attack} key={index}>{attack}</MenuItem>

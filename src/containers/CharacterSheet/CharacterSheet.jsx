@@ -509,15 +509,9 @@ export default function CharacterSheet(props) {
       const data = snapshot.val();
       const responsePokemon = data.find( pokemon => pokemon.name === name );
       if (responsePokemon !== undefined) {
-        console.log(responsePokemon)
-        const newStartingMoves = [];
-        responsePokemon.Moves["Starting Moves"].forEach(move => {
-          const newMove = move.replace('-', ' ');
-          newStartingMoves.push(newMove);
-        })
 
         const startingMoves = [];
-        const first4Moves = newStartingMoves.slice(0,4);
+        const first4Moves = responsePokemon.Moves["Starting Moves"].slice(0,4);
         first4Moves.forEach(move => {
           startingMoves.push({
             name: move,
@@ -546,7 +540,7 @@ export default function CharacterSheet(props) {
           moves:{
             tm: responsePokemon.Moves.TM,
             current: startingMoves,
-            startingMoves: newStartingMoves,
+            startingMoves: responsePokemon.Moves["Starting Moves"],
             level: responsePokemon.Moves.Level,
           },
           nickname: responsePokemon.name,
