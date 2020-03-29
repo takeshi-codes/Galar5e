@@ -1,105 +1,104 @@
 [
   {
-    "name":"Apathetic",
+    "name": "Apathetic",
     "bonus": "CON",
     "negative": "DEX"
-  }, 
+  },
   {
-    "name":"Brave",
+    "name": "Brave",
     "bonus": "STR",
     "negative": "WIS"
-  }, 
+  },
   {
-    "name":"Careful",
+    "name": "Careful",
     "bonus": "WIS",
     "negative": "STR"
-  }, 
+  },
   {
-    "name":"Cheerful",
+    "name": "Cheerful",
     "bonus": "CHA",
     "negative": "STR"
-  }, 
+  },
   {
-    "name":"Clumsy",
+    "name": "Clumsy",
     "bonus": "DEX",
     "negative": "WIS"
-  }, 
+  },
   {
-    "name":"Cocky",
+    "name": "Cocky",
     "bonus": "STR",
     "negative": "CHA"
-  }, 
+  },
   {
-    "name":"Curious",
+    "name": "Curious",
     "bonus": "WIS",
     "negative": "CON"
-  }, 
+  },
   {
-    "name":"Dumb",
+    "name": "Dumb",
     "bonus": "CHA",
     "negative": "WIS"
   },
   {
-    "name":"Energetic",
+    "name": "Energetic",
     "bonus": "DEX",
     "negative": "CHA"
-  }, 
+  },
   {
-    "name":"Grumpy",
+    "name": "Grumpy",
     "bonus": "CON",
     "negative": "CHA"
-  }, 
+  },
   {
-    "name":"Hardy",
+    "name": "Hardy",
     "bonus": "AC",
     "negative": "DEX"
-  }, 
+  },
   {
-    "name":"Hasty",
+    "name": "Hasty",
     "bonus": "DEX",
     "negative": "CON"
-  
-  }, 
+  },
   {
-    "name":"Naughty",
+    "name": "Naughty",
     "bonus": "WIS",
     "negative": "CHA"
-  }, 
+  },
   {
-    "name":"Nimble",
+    "name": "Nimble",
     "bonus": "AC",
     "negative": "STR"
-  }, 
+  },
   {
     "name": "No Nature"
-  }, 
+  },
   {
-    "name":"Rash",
+    "name": "Rash",
     "bonus": "STR",
     "negative": "CON"
-  }, 
+  },
   {
-    "name":"Reckless",
+    "name": "Reckless",
     "bonus": "STR",
     "negative": "DEX"
-  }, 
+  },
   {
-    "name":"Relaxed",
+    "name": "Relaxed",
     "bonus": "CON",
     "negative": "STR"
-  }, 
+  },
   {
-    "name":"Sassy",
+    "name": "Sassy",
     "bonus": "CHA",
     "negative": "DEX"
-  }, 
+  },
   {
-    "name":"Skittish",
+    "name": "Skittish",
     "bonus": "DEX",
     "negative": "STR"
   },
   {
-    "name":"Stubborn",
+    "name": "Stubborn",
     "bonus": "CON",
     "negative": "WIS"
   }
