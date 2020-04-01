@@ -1,34 +1,34 @@
-import React, {useState, useEffect} from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 
 const useStyles = makeStyles((theme) => ({
   characterInfo: {
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
-    gridTemplateTows: "repeat(3, 1fr)",
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gridTemplateTows: 'repeat(3, 1fr)',
     gridColumnGap: theme.spacing(2),
     gridRowGap: theme.spacing(2),
   },
   infoInput: {
-    minWidth: "100% !important",
+    minWidth: '100% !important',
   },
 }));
 
 export default function CharacterInfo(props) {
   const classes = useStyles();
-  const [textVariant, setTextVariant] = useState("outlined");
-  const [inputProps, setInputProps] = useState({readOnly: false});
+  const [textVariant, setTextVariant] = useState('outlined');
+  const [inputProps, setInputProps] = useState({ readOnly: false });
 
   useEffect(() => {
     if (!props.isEditable) {
-      setTextVariant("outlined");
-      setInputProps({readOnly: false});
+      setTextVariant('outlined');
+      setInputProps({ readOnly: false });
     } else {
-      setTextVariant("filled");
-      setInputProps({readOnly: true});
+      setTextVariant('filled');
+      setInputProps({ readOnly: true });
     }
   }, [props.isEditable]);
 

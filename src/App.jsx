@@ -1,21 +1,21 @@
-import React, {useState, useEffect} from "react";
-import {withRouter} from "react-router-dom";
-import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import {AuthProvider} from "./Auth";
-import app from "./services/firebase";
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { AuthProvider } from './Auth';
+import app from './services/firebase';
 
-import Routes from "./Routes";
+import Routes from './Routes';
 
-import Header from "./components/Header/Header";
+import Header from './components/Header/Header';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#34421E",
+      main: '#34421E',
     },
     secondary: {
-      main: "#C1943F",
+      main: '#C1943F',
     },
   },
 });
@@ -35,7 +35,7 @@ const App = (props) => {
         setLoading(false);
       });
     } catch (e) {
-      if (e !== "No current user") {
+      if (e !== 'No current user') {
         alert(e);
       }
     }
@@ -44,7 +44,7 @@ const App = (props) => {
 
   const handleLogout = async () => {
     await app.auth().signOut();
-    props.history.push("/login");
+    props.history.push('/login');
   };
 
   const handleSpinner = (status) => {
@@ -61,7 +61,7 @@ const App = (props) => {
             ) : (
               <div>
                 <Header logout={handleLogout} />
-                <Routes appProps={{handleSpinner}} />
+                <Routes appProps={{ handleSpinner }} />
               </div>
             )}
           </ThemeProvider>

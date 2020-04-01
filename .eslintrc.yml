@@ -14,4 +14,18 @@ parserOptions:
   sourceType: module
 plugins:
   - react
-rules: {}
+rules:
+  react/prop-types: off
+  no-alert: off
+  no-console: off
+  # below rules need to be disabled and fixed, tech debt to be addressed later
+  import/no-extraneous-dependencies: off
+  react/destructuring-assignment: off
+  no-param-reassign: off
+  react/jsx-props-no-spreading: off
+  no-restricted-syntax: off
+  no-unused-vars: off
+  react/no-array-index-key: off
+  no-shadow: off
+  operator-assignment: off
+  no-use-before-define: off

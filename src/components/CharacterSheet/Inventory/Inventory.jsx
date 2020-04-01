@@ -1,29 +1,29 @@
-import React, {useState, useEffect} from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
   inventoryTableContainer: {
-    height: "95%",
-    overflowY: "auto",
+    height: '95%',
+    overflowY: 'auto',
   },
   inventoryTable: {
-    height: "100%",
+    height: '100%',
   },
   inventoryTableHeader: {
     margin: theme.spacing(1),
@@ -37,8 +37,8 @@ export default function Inventory(props) {
   const [editing, setEditing] = useState();
   const [itemIndex, setItemIndex] = useState();
   const [newItem, setNewItem] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     quantity: 0,
   });
 
@@ -48,8 +48,8 @@ export default function Inventory(props) {
 
   const handleClickOpen = () => {
     setNewItem({
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       quantity: 0,
     });
     setOpen(true);
@@ -60,12 +60,12 @@ export default function Inventory(props) {
   };
 
   const handleNewItem = (e) => {
-    setNewItem({...newItem, [e.target.name]: e.target.value});
+    setNewItem({ ...newItem, [e.target.name]: e.target.value });
   };
 
   const addItem = () => {
-    newItem.quantity = parseInt(newItem.quantity);
-    let newInventory = inventory;
+    newItem.quantity = Number(newItem.quantity);
+    const newInventory = inventory;
     newInventory.push(newItem);
     setInventory(newInventory);
     props.inventory.push(newItem);
@@ -85,8 +85,8 @@ export default function Inventory(props) {
   };
 
   const updateItem = () => {
-    newItem.quantity = parseInt(newItem.quantity);
-    let newInventory = inventory;
+    newItem.quantity = Number(newItem.quantity);
+    const newInventory = inventory;
     newInventory[itemIndex] = newItem;
     setInventory(newInventory);
     props.inventory[itemIndex] = newItem;
@@ -138,8 +138,8 @@ export default function Inventory(props) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right" />
+              <TableCell align="right" />
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Description</TableCell>
               <TableCell align="right">Quantity</TableCell>
@@ -149,7 +149,7 @@ export default function Inventory(props) {
         </Table>
       </TableContainer>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{editing ? "Edit Item" : "Add Item"}</DialogTitle>
+        <DialogTitle>{editing ? 'Edit Item' : 'Add Item'}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus

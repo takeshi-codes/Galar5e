@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useCallback} from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import React, { useState, useEffect, useCallback } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import Pokedex from "../../../../assets/pokedex.json";
+import Pokedex from '../../../../assets/pokedex.json';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -26,9 +26,8 @@ export default function AddPokemon(props) {
 
   const fetchData = useCallback(async () => {
     const pokedexArray = Pokedex;
-    let renderedMonsterManual = [];
+    const renderedMonsterManual = [];
 
-    // eslint-disable-next-line no-unused-vars
     for (const [key, value] of Object.entries(pokedexArray)) {
       renderedMonsterManual.push(value);
     }
@@ -42,20 +41,19 @@ export default function AddPokemon(props) {
 
   if (loading) {
     return <CircularProgress color="secondary" />;
-  } else {
-    return (
-      <Card className={classes.card}>
-        <CardContent className={classes.grid}>
-          <Autocomplete
-            id="combo-box-demo"
-            options={monsterManual}
-            onChange={handleChangePokemon}
-            renderInput={(params) => (
-              <TextField {...params} label="Search..." variant="outlined" fullWidth />
-            )}
-          />
-        </CardContent>
-      </Card>
-    );
   }
+  return (
+    <Card className={classes.card}>
+      <CardContent className={classes.grid}>
+        <Autocomplete
+          id="combo-box-demo"
+          options={monsterManual}
+          onChange={handleChangePokemon}
+          renderInput={(params) => (
+            <TextField {...params} label="Search..." variant="outlined" fullWidth />
+          )}
+        />
+      </CardContent>
+    </Card>
+  );
 }

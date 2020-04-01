@@ -1,23 +1,23 @@
-import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
-    minWidth: "100%",
+    minWidth: '100%',
   },
   card: {
-    minHeight: "100%",
+    minHeight: '100%',
     marginBottom: theme.spacing(2),
   },
   label: {
     marginBottom: theme.spacing(2),
   },
   button: {
-    width: "100%",
+    width: '100%',
   },
 }));
 
@@ -29,14 +29,14 @@ export default function AddPokemon(props) {
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="body1" gutterBottom className={classes.label}>
-            Check out the "official" resources and more!
+            Check out the &quot;official&quot; resources and more!
           </Typography>
           <Button
             variant="contained"
             color="primary"
             disableElevation
             className={classes.button}
-            onClick={() => window.open("https://www.pokemon5e.com/")}
+            onClick={() => window.open('https://www.pokemon5e.com/')}
           >
             Pokemon5e.com
           </Button>
@@ -53,7 +53,7 @@ export default function AddPokemon(props) {
             color="primary"
             disableElevation
             className={classes.button}
-            onClick={() => window.open("https://www.pokemon5e.com/#pokedex5e")}
+            onClick={() => window.open('https://www.pokemon5e.com/#pokedex5e')}
           >
             Downloads
           </Button>
@@ -70,7 +70,7 @@ export default function AddPokemon(props) {
             color="primary"
             disableElevation
             className={classes.button}
-            onClick={() => window.open("https://ko-fi.com/joethedm")}
+            onClick={() => window.open('https://ko-fi.com/joethedm')}
           >
             Check him out here!
           </Button>

@@ -1,63 +1,60 @@
-import React, {useCallback, useState} from "react";
-import {withRouter} from "react-router";
-import app from "../../services/firebase";
+import React, { useCallback, useState } from 'react';
+import { withRouter } from 'react-router';
 
-import {makeStyles} from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import {Typography} from "@material-ui/core";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import app from '../../services/firebase';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0 auto",
-    width: "50%",
-    top: "50%",
+    margin: '0 auto',
+    width: '50%',
+    top: '50%',
   },
   button: {
-    width: "100%",
+    width: '100%',
   },
   link: {
-    textDecoration: "none",
+    textDecoration: 'none',
   },
   input: {
     marginBottom: theme.spacing(2),
   },
 }));
 
-const SignUp = ({history}) => {
+const SignUp = ({ history }) => {
   const classes = useStyles();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = useCallback(
     async (event) => {
       event.preventDefault();
-      const {email, password} = event.target.elements;
+      // eslint-disable-next-line no-shadow
+      const { email, password } = event.target.elements;
       try {
         setIsLoading(true);
         await app.auth().createUserWithEmailAndPassword(email.value, password.value);
-        history.push("/");
+        history.push('/');
       } catch (e) {
         alert(e.message);
         setIsLoading(false);
       }
     },
-    [history]
+    [history],
   );
 
-  const validateForm = () => {
-    return (
-      email.length > 0 &&
-      password.length > 0 &&
-      confirmPassword.length > 0 &&
-      password === confirmPassword
-    );
-  };
+  const validateForm = () => email.length > 0
+    && password.length > 0
+    && confirmPassword.length > 0
+    && password === confirmPassword;
 
   return (
     <div>

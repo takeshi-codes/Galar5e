@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from "react";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import TextField from "@material-ui/core/TextField";
-import {Remove, Add} from "@material-ui/icons";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Tooltip from "@material-ui/core/Tooltip";
+import React, { useState, useEffect } from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import TextField from '@material-ui/core/TextField';
+import { Remove, Add } from '@material-ui/icons';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import "./Proficiencies.css";
+import './Proficiencies.css';
 
 export default function Proficiencies(props) {
   const [htmlProfs, setHtmlProfs] = useState();
@@ -28,7 +28,7 @@ export default function Proficiencies(props) {
         bonus = <Remove fontSize="small" />;
       }
 
-      let profId = "prof-" + prof.name;
+      const profId = `prof-${prof.name}`;
       return (
         <div key={prof.name} className="prof-container-minor">
           <FormControlLabel
@@ -36,7 +36,7 @@ export default function Proficiencies(props) {
             label={prof.name}
             labelPlacement="end"
             className="prof"
-            control={
+            control={(
               <Checkbox
                 defaultChecked={prof.prof}
                 name={prof.name}
@@ -45,16 +45,14 @@ export default function Proficiencies(props) {
                   const profIndex = props.profs.indexOf(prof);
                   props.profs[profIndex].prof = e.target.checked;
                   if (e.target.checked) {
-                    props.profs[profIndex].bonus =
-                      props.profs[profIndex].bonus + props.profBonus;
+                    props.profs[profIndex].bonus = props.profs[profIndex].bonus + props.profBonus;
                   } else {
-                    props.profs[profIndex].bonus =
-                      props.profs[profIndex].bonus - props.profBonus;
+                    props.profs[profIndex].bonus = props.profs[profIndex].bonus - props.profBonus;
                   }
                   props.update();
                 }}
               />
-            }
+            )}
           />
           <Tooltip title="Calculated automatically">
             <TextField

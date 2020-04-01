@@ -1,15 +1,15 @@
-import React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
-import PrivateRoute from "./components/Routes/PrivateRoute";
+import React from 'react';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import PrivateRoute from './components/Routes/PrivateRoute';
 
-import Home from "./containers/Home";
-import CharacterSheet from "./containers/CharacterSheet/CharacterSheet";
-import User from "./containers/User";
-import ForgotPassword from "./containers/ForgotPassword";
-import CharacterList from "./containers/CharacterList";
-import Login from "./components/Auth/Login";
-import Signup from "./components/Auth/Signup";
-import NotFound from "./containers/NotFound";
+import Home from './containers/Home';
+import CharacterSheet from './containers/CharacterSheet/CharacterSheet';
+import User from './containers/User';
+import ForgotPassword from './containers/ForgotPassword';
+import CharacterList from './containers/CharacterList';
+import Login from './components/Auth/Login';
+import Signup from './components/Auth/Signup';
+import NotFound from './containers/NotFound';
 
 export default function Routes(appProps) {
   return (

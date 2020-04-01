@@ -1,13 +1,13 @@
-import React, {useContext} from "react";
-import {useHistory} from "react-router-dom";
-import {makeStyles} from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
+import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
-import {AuthContext} from "../../Auth";
+import { AuthContext } from '../../Auth';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,33 +19,33 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 }));
 
 export default function Header(props) {
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
   const history = useHistory();
 
   const navToTrainersPage = () => {
-    history.push("/my-trainers");
+    history.push('/my-trainers');
   };
 
   const navToSignup = () => {
-    history.push("/signup");
+    history.push('/signup');
   };
 
   const navToLogin = () => {
-    history.push("/login");
+    history.push('/login');
   };
 
   const navToProfile = () => {
-    history.push("/profile");
+    history.push('/profile');
   };
 
   const navToHome = () => {
-    history.push("/");
+    history.push('/');
   };
 
   return (

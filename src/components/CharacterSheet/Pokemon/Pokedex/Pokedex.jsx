@@ -1,17 +1,17 @@
-import React, {useState} from "react";
-import {makeStyles} from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Button from "@material-ui/core/Button";
-import Checkbox from "@material-ui/core/Checkbox";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 
-import AddPokemon from "../AddPokemon/AddPokemon";
+import AddPokemon from '../AddPokemon/AddPokemon';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -53,31 +53,29 @@ export default function Pokedex(props) {
     setAddPokemon(!addPokemon);
   };
 
-  const pokemonList = trainersDex.map((pokemon, key) => {
-    return (
-      <TableRow key={key}>
-        <TableCell>
-          <Checkbox
-            defaultChecked={pokemon.caught}
-            name="caught"
-            onChange={(e) => {
-              handleCheck(e, pokemon);
-            }}
-          />
-        </TableCell>
-        <TableCell>
-          <Checkbox
-            defaultChecked={pokemon.seen}
-            name="seen"
-            onChange={(e) => {
-              handleCheck(e, pokemon);
-            }}
-          />
-        </TableCell>
-        <TableCell>{pokemon.name}</TableCell>
-      </TableRow>
-    );
-  });
+  const pokemonList = trainersDex.map((pokemon, key) => (
+    <TableRow key={key}>
+      <TableCell>
+        <Checkbox
+          defaultChecked={pokemon.caught}
+          name="caught"
+          onChange={(e) => {
+            handleCheck(e, pokemon);
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <Checkbox
+          defaultChecked={pokemon.seen}
+          name="seen"
+          onChange={(e) => {
+            handleCheck(e, pokemon);
+          }}
+        />
+      </TableCell>
+      <TableCell>{pokemon.name}</TableCell>
+    </TableRow>
+  ));
 
   const handleClickAdd = () => {
     setAddPokemon(!addPokemon);

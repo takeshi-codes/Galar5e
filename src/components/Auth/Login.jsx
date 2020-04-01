@@ -1,42 +1,42 @@
-import React, {useState, useCallback, useContext} from "react";
-import {withRouter, Redirect} from "react-router";
-import {makeStyles} from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
+import React, { useState, useCallback, useContext } from 'react';
+import { withRouter, Redirect } from 'react-router';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 
-import app from "../../services/firebase";
-import {AuthContext} from "../../Auth";
+import app from '../../services/firebase';
+import { AuthContext } from '../../Auth';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    margin: "0 auto",
-    width: "50%",
-    top: "50%",
+    margin: '0 auto',
+    width: '50%',
+    top: '50%',
   },
   button: {
-    width: "100%",
+    width: '100%',
     marginBottom: theme.spacing(2),
   },
   link: {
-    textDecoration: "none",
+    textDecoration: 'none',
   },
   input: {
     marginBottom: theme.spacing(2),
   },
   forgotButton: {
-    width: "100%",
+    width: '100%',
   },
 }));
 
-const Login = ({history}) => {
-  const {currentUser} = useContext(AuthContext);
+const Login = ({ history }) => {
+  const { currentUser } = useContext(AuthContext);
   const classes = useStyles();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = useCallback(
@@ -45,21 +45,19 @@ const Login = ({history}) => {
       setIsLoading(true);
       try {
         await app.auth().signInWithEmailAndPassword(email, password);
-        history.push("/");
+        history.push('/');
       } catch (e) {
         alert(e.message);
         setIsLoading(false);
       }
     },
-    [history, email, password]
+    [history, email, password],
   );
 
-  const validateForm = () => {
-    return email.length > 0 && password.length > 0;
-  };
+  const validateForm = () => email.length > 0 && password.length > 0;
 
   const navToForgotPage = () => {
-    history.push("/forgot-password");
+    history.push('/forgot-password');
   };
 
   if (currentUser) {

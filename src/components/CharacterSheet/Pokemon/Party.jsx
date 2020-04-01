@@ -1,28 +1,28 @@
-import React, {useState, useEffect} from "react";
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Tooltip from "@material-ui/core/Tooltip";
+import React, { useState, useEffect } from 'react';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import PokemonDetails from "./Details/PokemonDetails";
-import AddPokemon from "./AddPokemon/AddPokemon";
-import Pokedex from "./Pokedex/Pokedex";
+import PokemonDetails from './Details/PokemonDetails';
+import AddPokemon from './AddPokemon/AddPokemon';
+import Pokedex from './Pokedex/Pokedex';
 
-import "./Party.css";
+import './Party.css';
 
 export default function Party(props) {
   const [open, setOpen] = useState(false);
   const [addPokemon, setAddPokemon] = useState(false);
   const [pokedex, setPokedex] = useState(false);
   const [party, setParty] = useState([...props.party]);
-  const [selectedPokemon, setSelectedPokemon] = useState("");
+  const [selectedPokemon, setSelectedPokemon] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [newPokemon, setNewPokemon] = useState("");
+  const [newPokemon, setNewPokemon] = useState('');
 
   useEffect(() => {
     setParty([...props.party]);
@@ -84,30 +84,30 @@ export default function Party(props) {
   };
 
   const handleUpdateInfo = (e) => {
-    const updatedPokemon = {...selectedPokemon};
-    setSelectedPokemon({...updatedPokemon, [e.target.name]: e.target.value});
+    const updatedPokemon = { ...selectedPokemon };
+    setSelectedPokemon({ ...updatedPokemon, [e.target.name]: e.target.value });
   };
 
   const handleUpdateStatus = (e) => {
-    const updatedPokemon = {...selectedPokemon};
+    const updatedPokemon = { ...selectedPokemon };
     updatedPokemon.status[e.target.name] = e.target.checked;
     setSelectedPokemon(updatedPokemon);
   };
 
   const handleUpdateStats = (e) => {
-    const updatedPokemon = {...selectedPokemon};
+    const updatedPokemon = { ...selectedPokemon };
     let value;
-    if (e.target.value === "") {
+    if (e.target.value === '') {
       value = 0;
     } else {
-      value = parseInt(e.target.value);
+      value = Number(e.target.value);
     }
     updatedPokemon.stats[e.target.name] = value;
     setSelectedPokemon(updatedPokemon);
   };
 
   const handleUpdateAbility = (ability) => {
-    const updatedPokemon = {...selectedPokemon};
+    const updatedPokemon = { ...selectedPokemon };
     updatedPokemon.currentAbility = ability;
     setSelectedPokemon(updatedPokemon);
   };
@@ -119,7 +119,9 @@ export default function Party(props) {
           {pokemon.name}
         </Typography>
         <Typography variant="subtitle2" className="pokemon-level">
-          Level {pokemon.level}
+          Level
+          {' '}
+          {pokemon.level}
         </Typography>
         <Button
           variant="contained"
@@ -132,11 +134,11 @@ export default function Party(props) {
         </Button>
         <Tooltip
           arrow
-          title={
-            <React.Fragment>
+          title={(
+            <>
               <Typography color="inherit">This cannot be undone!</Typography>
-            </React.Fragment>
-          }
+            </>
+          )}
         >
           <Button
             variant="contained"

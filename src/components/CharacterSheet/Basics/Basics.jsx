@@ -1,25 +1,25 @@
-import React, {useState, useEffect} from "react";
-import TextField from "@material-ui/core/TextField";
-import Card from "@material-ui/core/Card";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Tooltip from "@material-ui/core/Tooltip";
+import React, { useState, useEffect } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Card from '@material-ui/core/Card';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import "./Basics.css";
+import './Basics.css';
 
 export default function Basics(props) {
-  const [textVariant, setTextVariant] = useState("standard");
-  const [inputProps, setInputProps] = useState({readOnly: false});
+  const [textVariant, setTextVariant] = useState('standard');
+  const [inputProps, setInputProps] = useState({ readOnly: false });
   const [clickable, setClickable] = useState(false);
 
   useEffect(() => {
     if (!props.isEditable) {
-      setTextVariant("standard");
-      setInputProps({readOnly: false});
+      setTextVariant('standard');
+      setInputProps({ readOnly: false });
       setClickable(false);
     } else {
-      setTextVariant("filled");
-      setInputProps({readOnly: true});
+      setTextVariant('filled');
+      setInputProps({ readOnly: true });
       setClickable(true);
     }
   }, [props.isEditable]);
@@ -141,14 +141,14 @@ export default function Basics(props) {
       <Card variant="outlined" className="inspiration-card">
         <FormControlLabel
           value="end"
-          control={
+          control={(
             <Checkbox
               defaultChecked={props.basics.inspiration}
               name="inspiration"
               onChange={props.update}
               disabled={clickable}
             />
-          }
+          )}
           label="Inspiration"
           labelPlacement="end"
           className="inspiration-input"
