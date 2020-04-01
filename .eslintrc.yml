@@ -2,11 +2,10 @@ env:
   browser: true
   es6: true
 extends:
-  - "plugin:react/recommended"
-  - airbnb
-globals:
-  Atomics: readonly
-  SharedArrayBuffer: readonly
+  - 'plugin:react/recommended'
+  - standard
+  - prettier
+  - prettier/standard
 parserOptions:
   ecmaFeatures:
     jsx: true
@@ -14,7 +13,14 @@ parserOptions:
   sourceType: module
 plugins:
   - react
+  - standard
+  - prettier
+  - eslint-comments
+settings:
+  react:
+    version: detect
 rules:
+  prettier/prettier: error
   react/prop-types: off
   no-alert: off
   no-console: off
@@ -29,3 +35,4 @@ rules:
   no-shadow: off
   operator-assignment: off
   no-use-before-define: off
+  object-curly-newline: off

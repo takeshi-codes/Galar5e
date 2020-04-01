@@ -9,51 +9,56 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Pokedex from '../../../../assets/pokedex.json';
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
+        card: {
+                marginTop: theme.spacing(1),
+                marginBottom: theme.spacing(1),
+        },
 }));
 
 export default function AddPokemon(props) {
-  const classes = useStyles();
-  const [loading, setLoading] = useState(true);
-  const [monsterManual, setMonsterManual] = useState();
+        const classes = useStyles();
+        const [loading, setLoading] = useState(true);
+        const [monsterManual, setMonsterManual] = useState();
 
-  const handleChangePokemon = (event, value) => {
-    props.update(value);
-  };
+        const handleChangePokemon = (event, value) => {
+                props.update(value);
+        };
 
-  const fetchData = useCallback(async () => {
-    const pokedexArray = Pokedex;
-    const renderedMonsterManual = [];
+        const fetchData = useCallback(async () => {
+                const pokedexArray = Pokedex;
+                const renderedMonsterManual = [];
 
-    for (const [key, value] of Object.entries(pokedexArray)) {
-      renderedMonsterManual.push(value);
-    }
-    setMonsterManual(renderedMonsterManual);
-    setLoading(false);
-  }, []);
+                for (const [key, value] of Object.entries(pokedexArray)) {
+                        renderedMonsterManual.push(value);
+                }
+                setMonsterManual(renderedMonsterManual);
+                setLoading(false);
+        }, []);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+        useEffect(() => {
+                fetchData();
+        }, [fetchData]);
 
-  if (loading) {
-    return <CircularProgress color="secondary" />;
-  }
-  return (
-    <Card className={classes.card}>
-      <CardContent className={classes.grid}>
-        <Autocomplete
-          id="combo-box-demo"
-          options={monsterManual}
-          onChange={handleChangePokemon}
-          renderInput={(params) => (
-            <TextField {...params} label="Search..." variant="outlined" fullWidth />
-          )}
-        />
-      </CardContent>
-    </Card>
-  );
+        if (loading) {
+                return <CircularProgress color="secondary" />;
+        }
+        return (
+                <Card className={classes.card}>
+                        <CardContent className={classes.grid}>
+                                <Autocomplete
+                                        id="combo-box-demo"
+                                        options={monsterManual}
+                                        onChange={handleChangePokemon}
+                                        renderInput={(params) => (
+                                                <TextField
+                                                        {...params}
+                                                        label="Search..."
+                                                        variant="outlined"
+                                                        fullWidth
+                                                />
+                                        )}
+                                />
+                        </CardContent>
+                </Card>
+        );
 }
