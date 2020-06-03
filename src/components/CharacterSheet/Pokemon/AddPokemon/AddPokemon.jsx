@@ -28,6 +28,7 @@ export default function AddPokemon(props) {
     const pokedexArray = Pokedex;
     const renderedMonsterManual = [];
 
+    // eslint-disable-next-line
     for (const [key, value] of Object.entries(pokedexArray)) {
       renderedMonsterManual.push(value);
     }
