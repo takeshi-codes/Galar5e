@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
     gridColumnGap: theme.spacing(1),
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: 'repeat(1, 1fr)',
+    },
   },
   button: {
     width: '100%',
@@ -29,6 +32,13 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none',
+  },
+  bodyContainer: {
+    maxWidth: '60%',
+    margin: '0 auto',
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '90%',
+    },
   },
 }));
 
@@ -149,7 +159,7 @@ export default function CharacterList(props) {
     return <CircularProgress color="secondary" />;
   }
   return (
-    <div className="body-container">
+    <div className={classes.bodyContainer}>
       <Button
         variant="contained"
         color="primary"

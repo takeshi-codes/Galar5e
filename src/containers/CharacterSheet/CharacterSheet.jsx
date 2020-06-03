@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,8 +21,19 @@ import './CharacterSheet.css';
 import EmptySheet from '../../assets/trainer.json';
 import NewInventory from '../../assets/inventory.json';
 
+const useStyles = makeStyles((theme) => ({
+  bodyContainer: {
+    maxWidth: '60%',
+    margin: '0 auto',
+    [theme.breakpoints.down('md')]: {
+      maxWidth: '90%',
+    },
+  },
+}));
+
 export default function CharacterSheet(props) {
   const { currentUser } = useContext(AuthContext);
+  const classes = useStyles();
   const history = useHistory();
   const [isNew, setIsNew] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -405,6 +417,8 @@ export default function CharacterSheet(props) {
       .then(() => {
         newTrainerRef.get().then((doc) => {
           history.push(`/trainer-sheet/${doc.data().id}`);
+          setIsNew(false);
+          setUpdating(false);
         });
       });
   };
@@ -661,7 +675,7 @@ export default function CharacterSheet(props) {
     return <CircularProgress color="secondary" />;
   }
   return (
-    <div className="body-container">
+    <div className={classes.bodyContainer}>
       <Drawer anchor="right" open={inventory} onClose={(e) => toggleDrawer(e, 'inventory', false)}>
         <Inventory inventory={trainerInventory} remove={removeItem} isEditable={isEditable} />
       </Drawer>

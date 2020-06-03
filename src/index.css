@@ -14,8 +14,3 @@ code {
 .MuiDrawer-paper {
   background-color: #f2f3f4 !important;
 }
-
-.body-container {
-  max-width: 60%;
-  margin: 0 auto;
-}
