@@ -68,12 +68,7 @@ const Login = ({ history }) => {
     <div className={classes.root}>
       <Card variant="outlined" className={classes.card}>
         <CardContent>
-          <form
-            className={classes.root}
-            autoComplete="off"
-            id="userForm"
-            onSubmit={handleLogin}
-          >
+          <form className={classes.root} autoComplete="off" id="userForm" onSubmit={handleLogin}>
             <TextField
               required
               className={classes.input}
@@ -102,11 +97,7 @@ const Login = ({ history }) => {
               disabled={!validateForm()}
               type="submit"
             >
-              {isLoading ? (
-                <CircularProgress color="secondary" />
-              ) : (
-                <Typography>Login</Typography>
-              )}
+              {isLoading ? <CircularProgress color="secondary" /> : <Typography>Login</Typography>}
             </Button>
           </form>
           <Button

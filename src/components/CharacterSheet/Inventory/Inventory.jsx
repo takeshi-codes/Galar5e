@@ -106,12 +106,7 @@ export default function Inventory(props) {
         </Button>
       </TableCell>
       <TableCell alight="right">
-        <Button
-          variant="outlined"
-          color="primary"
-          disableElevation
-          onClick={() => editItem(row)}
-        >
+        <Button variant="outlined" color="primary" disableElevation onClick={() => editItem(row)}>
           <EditIcon />
         </Button>
       </TableCell>
@@ -126,12 +121,7 @@ export default function Inventory(props) {
       <TableContainer className={classes.inventoryTable} component={Paper}>
         <div className={classes.inventoryTableHeader}>
           <Typography variant="h6">Inventory</Typography>
-          <Button
-            variant="outlined"
-            color="primary"
-            disableElevation
-            onClick={handleClickOpen}
-          >
+          <Button variant="outlined" color="primary" disableElevation onClick={handleClickOpen}>
             Add Item
           </Button>
         </div>
