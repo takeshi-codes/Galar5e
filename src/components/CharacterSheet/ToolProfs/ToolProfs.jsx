@@ -84,12 +84,7 @@ export default function ToolProfs(props) {
           <TableBody>{toolProfTable}</TableBody>
         </Table>
       </TableContainer>
-      <Button
-        variant="contained"
-        color="primary"
-        disableElevation
-        onClick={handleClickOpen}
-      >
+      <Button variant="contained" color="primary" disableElevation onClick={handleClickOpen}>
         Add Proficiency
       </Button>
       <Dialog open={open} onClose={handleClose}>

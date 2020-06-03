@@ -12,32 +12,19 @@ import Signup from './components/Auth/Signup';
 import NotFound from './containers/NotFound';
 
 export default function Routes(appProps) {
-        return (
-                <BrowserRouter>
-                        <Switch>
-                                <Route exact path="/" component={Home} />
-                                <Route exact path="/login" component={Login} />
-                                <Route exact path="/signup" component={Signup} />
-                                <Route exact path="/forgot-password" component={ForgotPassword} />
-                                <PrivateRoute
-                                        exact
-                                        path="/trainer-sheet/:id"
-                                        component={CharacterSheet}
-                                />
-                                <PrivateRoute
-                                        exact
-                                        path="/my-trainers"
-                                        component={CharacterList}
-                                        appProps={appProps}
-                                />
-                                <PrivateRoute
-                                        exact
-                                        path="/create-trainer"
-                                        component={CharacterSheet}
-                                />
-                                <PrivateRoute exact path="/profile" component={User} />
-                                <Route component={NotFound} />
-                        </Switch>
-                </BrowserRouter>
-        );
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/forgot-password" component={ForgotPassword} />
+        <PrivateRoute exact path="/trainer-sheet/:id" component={CharacterSheet} />
+        <PrivateRoute exact path="/my-trainers" component={CharacterList} appProps={appProps} />
+        <PrivateRoute exact path="/create-trainer" component={CharacterSheet} />
+        <PrivateRoute exact path="/profile" component={User} />
+        <Route component={NotFound} />
+      </Switch>
+    </BrowserRouter>
+  );
 }
