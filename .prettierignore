@@ -1,2 +1,5 @@
-src/serviceWorker.js
-src/setupTests.js
+.cache
+package.json
+package-lock.json
+public
+.next
