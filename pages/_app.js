@@ -1,10 +1,30 @@
-import UserProvider from '../context/userContext'
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { Provider } from 'next-auth/client';
 
-// Custom App to wrap it with context provider
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+`;
+
+const theme = {
+  colors: {
+    primary: '#0070f3',
+  },
+};
+
 export default function App({ Component, pageProps }) {
+  const { session } = pageProps;
   return (
-    <UserProvider>
-      <Component {...pageProps} />
-    </UserProvider>
-  )
+    <>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Provider session={session}>
+          <Component {...pageProps} />
+        </Provider>
+      </ThemeProvider>
+    </>
+  );
 }
