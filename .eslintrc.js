@@ -4,14 +4,8 @@ module.exports = {
     tw: true,
   },
   parser: 'babel-eslint',
-  extends: [
-    `react-app`,
-    `prettier`  
-  ],
-  plugins:[
-    'prettier',
-    'react'
-  ],
+  extends: [`react-app`, `prettier`],
+  plugins: ['prettier', 'react'],
   settings: {
     react: {
       version: 'detect',
