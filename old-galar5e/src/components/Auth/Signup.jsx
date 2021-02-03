@@ -10,7 +10,7 @@ import { Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import app from '../../services/firebase';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   card: {
     margin: '0 auto',
     width: '50%',
@@ -35,20 +35,22 @@ const SignUp = ({ history }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignUp = useCallback(
-    async (event) => {
+    async event => {
       event.preventDefault();
       // eslint-disable-next-line no-shadow
       const { email, password } = event.target.elements;
       try {
         setIsLoading(true);
-        await app.auth().createUserWithEmailAndPassword(email.value, password.value);
+        await app
+          .auth()
+          .createUserWithEmailAndPassword(email.value, password.value);
         history.push('/');
       } catch (e) {
         alert(e.message);
         setIsLoading(false);
       }
     },
-    [history],
+    [history]
   );
 
   const validateForm = () =>
@@ -61,7 +63,12 @@ const SignUp = ({ history }) => {
     <div>
       <Card variant="outlined" className={classes.card}>
         <CardContent>
-          <form className={classes.root} autoComplete="off" id="userForm" onSubmit={handleSignUp}>
+          <form
+            className={classes.root}
+            autoComplete="off"
+            id="userForm"
+            onSubmit={handleSignUp}
+          >
             <TextField
               autoFocus
               required
@@ -69,7 +76,7 @@ const SignUp = ({ history }) => {
               fullWidth
               type="email"
               label="Email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               value={email}
               variant="outlined"
               name="email"
@@ -79,7 +86,7 @@ const SignUp = ({ history }) => {
               fullWidth
               className={classes.input}
               label="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               value={password}
               name="password"
               variant="outlined"
@@ -90,7 +97,7 @@ const SignUp = ({ history }) => {
               fullWidth
               className={classes.input}
               label="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={e => setConfirmPassword(e.target.value)}
               value={confirmPassword}
               variant="outlined"
               type="password"

@@ -41,11 +41,11 @@ export default function CharacterSheet(props) {
     insight: 0,
   });
 
-  const calculateBonuses = useCallback((trainer) => {
+  const calculateBonuses = useCallback(trainer => {
     const updatedTrainer = { ...trainer };
     const newSavingThrows = updatedTrainer.savingThrows;
     const newSkills = updatedTrainer.skills;
-    newSavingThrows.forEach((savingThrow) => {
+    newSavingThrows.forEach(savingThrow => {
       if (savingThrow.name === 'STR') {
         savingThrow.bonus = getMod(trainer.stats.STR);
         if (savingThrow.prof === true) {
@@ -84,7 +84,7 @@ export default function CharacterSheet(props) {
       }
     });
 
-    newSkills.forEach((skill) => {
+    newSkills.forEach(skill => {
       if (skill.name === 'Acrobatics') {
         skill.bonus = getMod(trainer.stats.DEX);
         if (skill.prof === true) {
@@ -216,7 +216,7 @@ export default function CharacterSheet(props) {
         .collection('trainers')
         .doc(props.match.params.id);
 
-      trainerRef.get().then((doc) => {
+      trainerRef.get().then(doc => {
         if (doc.exists) {
           const firebaseTrainer = doc.data().trainerSheet;
           setTrainer(firebaseTrainer);
@@ -231,7 +231,12 @@ export default function CharacterSheet(props) {
         }
       });
     }
-  }, [calculateBonuses, props.match.params.id, props.location.pathname, currentUser]);
+  }, [
+    calculateBonuses,
+    props.match.params.id,
+    props.location.pathname,
+    currentUser,
+  ]);
 
   useEffect(() => {
     if (loading) {
@@ -239,24 +244,28 @@ export default function CharacterSheet(props) {
     }
   }, [loading, fetchData]);
 
-  const getPassives = (trainer) => {
+  const getPassives = trainer => {
     const newPassives = {};
-    let perception = trainer.skills.filter((skill) => skill.name === 'Perception');
+    let perception = trainer.skills.filter(
+      skill => skill.name === 'Perception'
+    );
     perception = 10 + perception[0].bonus;
     newPassives.perception = perception;
 
-    let investigation = trainer.skills.filter((skill) => skill.name === 'Investigation');
+    let investigation = trainer.skills.filter(
+      skill => skill.name === 'Investigation'
+    );
     investigation = 10 + investigation[0].bonus;
     newPassives.investigation = investigation;
 
-    let insight = trainer.skills.filter((skill) => skill.name === 'Insight');
+    let insight = trainer.skills.filter(skill => skill.name === 'Insight');
     insight = 10 + insight[0].bonus;
     newPassives.insight = insight;
 
     setPassives(newPassives);
   };
 
-  const getMod = (stat) => {
+  const getMod = stat => {
     let mod = 0;
     if (stat < 8) {
       mod = -2;
@@ -285,11 +294,21 @@ export default function CharacterSheet(props) {
   const updateButtons = () => (
     <>
       {isEditable ? (
-        <Button variant="outlined" color="primary" disableElevation onClick={updateTrainer}>
+        <Button
+          variant="outlined"
+          color="primary"
+          disableElevation
+          onClick={updateTrainer}
+        >
           Save Changes
         </Button>
       ) : (
-        <Button variant="outlined" color="primary" disableElevation onClick={handleClickEdit}>
+        <Button
+          variant="outlined"
+          color="primary"
+          disableElevation
+          onClick={handleClickEdit}
+        >
           Edit Trainer
         </Button>
       )}
@@ -298,7 +317,7 @@ export default function CharacterSheet(props) {
         color="primary"
         disabled={!isEditable}
         disableElevation
-        onClick={(e) => toggleDrawer(e, 'inventory', true)}
+        onClick={e => toggleDrawer(e, 'inventory', true)}
       >
         Inventory
       </Button>
@@ -307,7 +326,7 @@ export default function CharacterSheet(props) {
         color="primary"
         disabled={!isEditable}
         disableElevation
-        onClick={(e) => toggleDrawer(e, 'pokemon', true)}
+        onClick={e => toggleDrawer(e, 'pokemon', true)}
       >
         Pokemon
       </Button>
@@ -316,12 +335,17 @@ export default function CharacterSheet(props) {
         color="primary"
         disabled={!isEditable}
         disableElevation
-        onClick={(e) => toggleDrawer(e, 'tools', true)}
+        onClick={e => toggleDrawer(e, 'tools', true)}
       >
         Tool Proficiencies
       </Button>
       <Tooltip title="This will discard all unsaved changes">
-        <Button variant="outlined" disableElevation component={Link} to="/my-trainers">
+        <Button
+          variant="outlined"
+          disableElevation
+          component={Link}
+          to="/my-trainers"
+        >
           Exit
         </Button>
       </Tooltip>
@@ -330,19 +354,29 @@ export default function CharacterSheet(props) {
 
   const newButtons = () => (
     <>
-      <Button variant="outlined" color="primary" disableElevation onClick={createTrainer}>
+      <Button
+        variant="outlined"
+        color="primary"
+        disableElevation
+        onClick={createTrainer}
+      >
         Create Trainer
       </Button>
       <Button
         variant="outlined"
         color="primary"
         disableElevation
-        onClick={(e) => toggleDrawer(e, 'tools', true)}
+        onClick={e => toggleDrawer(e, 'tools', true)}
       >
         Tool Proficiencies
       </Button>
       <Tooltip title="This will discard all unsaved changes">
-        <Button variant="outlined" disableElevation component={Link} to="/my-trainers">
+        <Button
+          variant="outlined"
+          disableElevation
+          component={Link}
+          to="/my-trainers"
+        >
           Exit
         </Button>
       </Tooltip>
@@ -403,13 +437,13 @@ export default function CharacterSheet(props) {
         pokedex: [],
       })
       .then(() => {
-        newTrainerRef.get().then((doc) => {
+        newTrainerRef.get().then(doc => {
           history.push(`/trainer-sheet/${doc.data().id}`);
         });
       });
   };
 
-  const removeItem = (item) => {
+  const removeItem = item => {
     const updatedInventory = [...trainerInventory];
     const index = updatedInventory.indexOf(item);
     if (index > -1) {
@@ -419,7 +453,7 @@ export default function CharacterSheet(props) {
     setInventory(false);
   };
 
-  const removeProf = (prof) => {
+  const removeProf = prof => {
     const updatedTrainer = trainer;
     const index = updatedTrainer.toolProf.indexOf(prof);
     if (index > -1) {
@@ -429,19 +463,19 @@ export default function CharacterSheet(props) {
     setTools(false);
   };
 
-  const handleUpdateInfo = (e) => {
+  const handleUpdateInfo = e => {
     const updatedTrainer = { ...trainer };
     updatedTrainer.info[e.target.name] = e.target.value;
     setTrainer(updatedTrainer);
   };
 
-  const handleUpdateDetails = (e) => {
+  const handleUpdateDetails = e => {
     const updatedTrainer = { ...trainer };
     updatedTrainer.details[e.target.name] = e.target.value;
     setTrainer(updatedTrainer);
   };
 
-  const handleUpdateStats = (e) => {
+  const handleUpdateStats = e => {
     const updatedTrainer = { ...trainer };
     let value;
     if (e.target.value === '') {
@@ -461,7 +495,7 @@ export default function CharacterSheet(props) {
     getPassives(updatedTrainer);
   };
 
-  const handleUpdateBasics = (e) => {
+  const handleUpdateBasics = e => {
     const updatedTrainer = { ...trainer };
     if (e.target.name !== 'inspiration') {
       if (e.target.name !== 'hitDice') {
@@ -479,19 +513,19 @@ export default function CharacterSheet(props) {
     }
   };
 
-  const handleUpdateTrainerPath = (e) => {
+  const handleUpdateTrainerPath = e => {
     const updatedTrainer = { ...trainer };
     updatedTrainer.trainerPaths[e.target.name] = e.target.value;
     setTrainer(updatedTrainer);
   };
 
-  const handleUpdateSpecializations = (e) => {
+  const handleUpdateSpecializations = e => {
     const updatedTrainer = { ...trainer };
     updatedTrainer.specializations[e.target.name] = e.target.value;
     setTrainer(updatedTrainer);
   };
 
-  const handleUpdatePokemon = async (trainerParty) => {
+  const handleUpdatePokemon = async trainerParty => {
     setDrawerLoading(true);
     const trainerRef = app
       .firestore()
@@ -505,7 +539,7 @@ export default function CharacterSheet(props) {
         pokemon: trainerParty,
       })
       .then(() => {
-        trainerRef.get().then((doc) => {
+        trainerRef.get().then(doc => {
           const firebaseParty = doc.data().pokemon;
           setParty(firebaseParty);
           setDrawerLoading(false);
@@ -513,20 +547,23 @@ export default function CharacterSheet(props) {
       });
   };
 
-  const handleAddPokemon = async (name) => {
+  const handleAddPokemon = async name => {
     setDrawerLoading(true);
     const updatedParty = [...party];
     app
       .database()
       .ref('monstermanual/pokemon')
-      .once('value', (snapshot) => {
+      .once('value', snapshot => {
         const data = snapshot.val();
-        const responsePokemon = data.find((pokemon) => pokemon.name === name);
+        const responsePokemon = data.find(pokemon => pokemon.name === name);
         if (responsePokemon !== undefined) {
           console.log(responsePokemon);
           const startingMoves = [];
-          const first4Moves = responsePokemon.Moves['Starting Moves'].slice(0, 4);
-          first4Moves.forEach((move) => {
+          const first4Moves = responsePokemon.Moves['Starting Moves'].slice(
+            0,
+            4
+          );
+          first4Moves.forEach(move => {
             startingMoves.push({
               name: move,
               pp: 0,
@@ -643,7 +680,7 @@ export default function CharacterSheet(props) {
         pokedex: updatedPokedex,
       })
       .then(() => {
-        trainerRef.get().then((doc) => {
+        trainerRef.get().then(doc => {
           const firebasePokedex = doc.data().pokedex;
           setPokedex(firebasePokedex);
           setDrawerLoading(false);
@@ -651,7 +688,7 @@ export default function CharacterSheet(props) {
       });
   };
 
-  const handleAddPokdex = (newPokedex) => {
+  const handleAddPokdex = newPokedex => {
     let updatedPokedex = [...pokedex];
     updatedPokedex = newPokedex;
     setPokedex(updatedPokedex);
@@ -662,10 +699,22 @@ export default function CharacterSheet(props) {
   }
   return (
     <div className="body-container">
-      <Drawer anchor="right" open={inventory} onClose={(e) => toggleDrawer(e, 'inventory', false)}>
-        <Inventory inventory={trainerInventory} remove={removeItem} isEditable={isEditable} />
+      <Drawer
+        anchor="right"
+        open={inventory}
+        onClose={e => toggleDrawer(e, 'inventory', false)}
+      >
+        <Inventory
+          inventory={trainerInventory}
+          remove={removeItem}
+          isEditable={isEditable}
+        />
       </Drawer>
-      <Drawer anchor="right" open={pokemon} onClose={(e) => toggleDrawer(e, 'pokemon', false)}>
+      <Drawer
+        anchor="right"
+        open={pokemon}
+        onClose={e => toggleDrawer(e, 'pokemon', false)}
+      >
         {drawerLoading ? (
           <CircularProgress color="secondary" />
         ) : (
@@ -679,18 +728,28 @@ export default function CharacterSheet(props) {
           />
         )}
       </Drawer>
-      <Drawer anchor="right" open={tools} onClose={(e) => toggleDrawer(e, 'tools', false)}>
+      <Drawer
+        anchor="right"
+        open={tools}
+        onClose={e => toggleDrawer(e, 'tools', false)}
+      >
         <ToolProfs toolProfs={trainer.toolProf} remove={removeProf} />
       </Drawer>
       <div className="cs-header">
-        <div className="action-buttons">{isNew ? newButtons() : updateButtons()}</div>
+        <div className="action-buttons">
+          {isNew ? newButtons() : updateButtons()}
+        </div>
         <CharacterInfo
           info={trainer.info}
           update={handleUpdateInfo}
           user={currentUser}
           isEditable={!isEditable}
         />
-        <Details details={trainer.details} update={handleUpdateDetails} isEditable={!isEditable} />
+        <Details
+          details={trainer.details}
+          update={handleUpdateDetails}
+          isEditable={!isEditable}
+        />
       </div>
       <div className="character-sheet-body">
         <div className="stat-block-container">

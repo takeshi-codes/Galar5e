@@ -13,7 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import AddPokemon from '../AddPokemon/AddPokemon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   card: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -40,7 +40,7 @@ export default function Pokedex(props) {
     }
   };
 
-  const handleUpdatePokedex = (value) => {
+  const handleUpdatePokedex = value => {
     const newTrainersDex = [...trainersDex];
     const newPokemon = {
       name: value,
@@ -59,7 +59,7 @@ export default function Pokedex(props) {
         <Checkbox
           defaultChecked={pokemon.caught}
           name="caught"
-          onChange={(e) => {
+          onChange={e => {
             handleCheck(e, pokemon);
           }}
         />
@@ -68,7 +68,7 @@ export default function Pokedex(props) {
         <Checkbox
           defaultChecked={pokemon.seen}
           name="seen"
-          onChange={(e) => {
+          onChange={e => {
             handleCheck(e, pokemon);
           }}
         />

@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import app from '../services/firebase';
 import { AuthContext } from '../Auth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
     marginBottom: theme.spacing(2),
@@ -40,10 +40,10 @@ export default function CharacterList(props) {
   const history = useHistory();
 
   const navToTrainerPage = useCallback(
-    (characterId) => {
+    characterId => {
       history.push(`/trainer-sheet/${characterId}`);
     },
-    [history],
+    [history]
   );
 
   const navToCreateTrainer = () => {
@@ -51,7 +51,7 @@ export default function CharacterList(props) {
   };
 
   const deleteCharacter = useCallback(
-    async (characterId) => {
+    async characterId => {
       props.appProps.handleSpinner(true);
       if (currentUser !== undefined) {
         app
@@ -66,11 +66,11 @@ export default function CharacterList(props) {
           });
       }
     },
-    [props, currentUser],
+    [props, currentUser]
   );
 
   const renderCharacters = useCallback(
-    (list) => {
+    list => {
       const characters = list.map((character, index) => (
         <Card variant="outlined" key={index} className={classes.root}>
           <CardContent>
@@ -102,13 +102,19 @@ export default function CharacterList(props) {
       ));
       return characters;
     },
-    [classes.button, classes.root, navToTrainerPage, classes.createButton, deleteCharacter],
+    [
+      classes.button,
+      classes.root,
+      navToTrainerPage,
+      classes.createButton,
+      deleteCharacter,
+    ]
   );
 
   const fetchData = useCallback(() => {
     if (currentUser !== undefined) {
       const usersRef = app.firestore().collection('users').doc(currentUser.uid);
-      usersRef.get().then((doc) => {
+      usersRef.get().then(doc => {
         if (doc.exists) {
           const trainersList = [];
           app
@@ -117,8 +123,8 @@ export default function CharacterList(props) {
             .doc(currentUser.uid)
             .collection('trainers')
             .get()
-            .then((querySnapshot) => {
-              querySnapshot.forEach((doc) => {
+            .then(querySnapshot => {
+              querySnapshot.forEach(doc => {
                 const trainerData = {
                   id: doc.data().id,
                   name: doc.data().trainerSheet.info.name,

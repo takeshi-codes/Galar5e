@@ -20,7 +20,7 @@ export default function Proficiencies(props) {
     } else {
       setClickable(true);
     }
-    const listProfs = props.profs.map((prof) => {
+    const listProfs = props.profs.map(prof => {
       let bonus;
       if (prof.bonus > -1) {
         bonus = <Add fontSize="small" />;
@@ -41,13 +41,15 @@ export default function Proficiencies(props) {
                 defaultChecked={prof.prof}
                 name={prof.name}
                 disabled={clickable}
-                onChange={(e) => {
+                onChange={e => {
                   const profIndex = props.profs.indexOf(prof);
                   props.profs[profIndex].prof = e.target.checked;
                   if (e.target.checked) {
-                    props.profs[profIndex].bonus = props.profs[profIndex].bonus + props.profBonus;
+                    props.profs[profIndex].bonus =
+                      props.profs[profIndex].bonus + props.profBonus;
                   } else {
-                    props.profs[profIndex].bonus = props.profs[profIndex].bonus - props.profBonus;
+                    props.profs[profIndex].bonus =
+                      props.profs[profIndex].bonus - props.profBonus;
                   }
                   props.update();
                 }}
@@ -61,7 +63,9 @@ export default function Proficiencies(props) {
               className="prof-bonus"
               InputProps={{
                 readOnly: true,
-                startAdornment: <InputAdornment position="start">{bonus}</InputAdornment>,
+                startAdornment: (
+                  <InputAdornment position="start">{bonus}</InputAdornment>
+                ),
               }}
             />
           </Tooltip>

@@ -9,7 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import app from '../services/firebase';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   card: {
     margin: '0 auto',
     width: '50%',
@@ -35,7 +35,7 @@ export default function ForgotPassword(props) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleForgetPassword = async (event) => {
+  const handleForgetPassword = async event => {
     event.preventDefault();
     setIsLoading(true);
     try {
@@ -43,7 +43,9 @@ export default function ForgotPassword(props) {
         .auth()
         .sendPasswordResetEmail(email)
         .then(() => {
-          alert('An email has been sent containing the link to reset your password');
+          alert(
+            'An email has been sent containing the link to reset your password'
+          );
           props.history.push('/login');
         });
     } catch (e) {
@@ -71,7 +73,7 @@ export default function ForgotPassword(props) {
               type="email"
               label="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               variant="outlined"
               name="email"
             />
@@ -89,7 +91,9 @@ export default function ForgotPassword(props) {
                 <Typography>Send Password Reset</Typography>
               )}
             </Button>
-            <Typography className={classes.button}>Be sure to check your spam folder!</Typography>
+            <Typography className={classes.button}>
+              Be sure to check your spam folder!
+            </Typography>
           </form>
         </CardContent>
       </Card>

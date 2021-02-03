@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   characterInfo: {
     display: 'grid',
     gridTemplateColumns: 'repeat(3, 1fr)',

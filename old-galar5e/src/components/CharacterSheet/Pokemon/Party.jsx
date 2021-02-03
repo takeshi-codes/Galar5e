@@ -59,7 +59,7 @@ export default function Party(props) {
     props.add(newPokemon);
   };
 
-  const handleNewPokemon = (name) => {
+  const handleNewPokemon = name => {
     setNewPokemon(name);
   };
 
@@ -67,13 +67,13 @@ export default function Party(props) {
     setAddPokemon(false);
   };
 
-  const seeDetails = (pokemon) => {
+  const seeDetails = pokemon => {
     setSelectedPokemon(pokemon);
     setSelectedIndex(party.indexOf(pokemon));
     handleClickOpen();
   };
 
-  const deletePokemon = (pokemon) => {
+  const deletePokemon = pokemon => {
     const newParty = [...party];
     const index = newParty.indexOf(pokemon);
     if (index > -1) {
@@ -83,18 +83,18 @@ export default function Party(props) {
     props.update(newParty);
   };
 
-  const handleUpdateInfo = (e) => {
+  const handleUpdateInfo = e => {
     const updatedPokemon = { ...selectedPokemon };
     setSelectedPokemon({ ...updatedPokemon, [e.target.name]: e.target.value });
   };
 
-  const handleUpdateStatus = (e) => {
+  const handleUpdateStatus = e => {
     const updatedPokemon = { ...selectedPokemon };
     updatedPokemon.status[e.target.name] = e.target.checked;
     setSelectedPokemon(updatedPokemon);
   };
 
-  const handleUpdateStats = (e) => {
+  const handleUpdateStats = e => {
     const updatedPokemon = { ...selectedPokemon };
     let value;
     if (e.target.value === '') {
@@ -106,7 +106,7 @@ export default function Party(props) {
     setSelectedPokemon(updatedPokemon);
   };
 
-  const handleUpdateAbility = (ability) => {
+  const handleUpdateAbility = ability => {
     const updatedPokemon = { ...selectedPokemon };
     updatedPokemon.currentAbility = ability;
     setSelectedPokemon(updatedPokemon);
@@ -174,7 +174,12 @@ export default function Party(props) {
         Pokedex
       </Button>
       <div className="pokemon-list-container">{pokemonList}</div>
-      <Dialog open={open} onClose={handleDiscard} scroll="paper" className="dialog">
+      <Dialog
+        open={open}
+        onClose={handleDiscard}
+        scroll="paper"
+        className="dialog"
+      >
         <DialogTitle id="form-dialog-title">{selectedPokemon.name}</DialogTitle>
         <DialogContent>
           <PokemonDetails
@@ -194,7 +199,12 @@ export default function Party(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={addPokemon} onClose={handleDiscard} scroll="paper" className="add-dialog">
+      <Dialog
+        open={addPokemon}
+        onClose={handleDiscard}
+        scroll="paper"
+        className="add-dialog"
+      >
         <DialogTitle>Add Pokemon</DialogTitle>
         <DialogContent>
           <AddPokemon update={handleNewPokemon} />
@@ -203,21 +213,38 @@ export default function Party(props) {
           <Button variant="outlined" onClick={handleAddPokemon} color="primary">
             Save
           </Button>
-          <Button variant="outlined" onClick={handleDiscardPokemon} color="primary">
+          <Button
+            variant="outlined"
+            onClick={handleDiscardPokemon}
+            color="primary"
+          >
             Close
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={pokedex} onClose={handleClosePokedex} scroll="paper" className="add-dialog">
+      <Dialog
+        open={pokedex}
+        onClose={handleClosePokedex}
+        scroll="paper"
+        className="add-dialog"
+      >
         <DialogTitle>Pokedex</DialogTitle>
         <DialogContent>
           <Pokedex pokedex={props.pokedex} add={props.addPokedex} />
         </DialogContent>
         <DialogActions>
-          <Button variant="outlined" onClick={props.updatePokedex} color="primary">
+          <Button
+            variant="outlined"
+            onClick={props.updatePokedex}
+            color="primary"
+          >
             Save
           </Button>
-          <Button variant="outlined" onClick={handleClosePokedex} color="primary">
+          <Button
+            variant="outlined"
+            onClick={handleClosePokedex}
+            color="primary"
+          >
             Close
           </Button>
         </DialogActions>

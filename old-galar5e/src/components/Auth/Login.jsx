@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import app from '../../services/firebase';
 import { AuthContext } from '../../Auth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   card: {
     margin: '0 auto',
     width: '50%',
@@ -40,7 +40,7 @@ const Login = ({ history }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = useCallback(
-    async (event) => {
+    async event => {
       event.preventDefault();
       setIsLoading(true);
       try {
@@ -51,7 +51,7 @@ const Login = ({ history }) => {
         setIsLoading(false);
       }
     },
-    [history, email, password],
+    [history, email, password]
   );
 
   const validateForm = () => email.length > 0 && password.length > 0;
@@ -68,14 +68,19 @@ const Login = ({ history }) => {
     <div className={classes.root}>
       <Card variant="outlined" className={classes.card}>
         <CardContent>
-          <form className={classes.root} autoComplete="off" id="userForm" onSubmit={handleLogin}>
+          <form
+            className={classes.root}
+            autoComplete="off"
+            id="userForm"
+            onSubmit={handleLogin}
+          >
             <TextField
               required
               className={classes.input}
               fullWidth
               type="email"
               label="Email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               variant="outlined"
               value={email}
             />
@@ -84,7 +89,7 @@ const Login = ({ history }) => {
               fullWidth
               className={classes.input}
               label="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               variant="outlined"
               value={password}
               type="password"
@@ -97,7 +102,11 @@ const Login = ({ history }) => {
               disabled={!validateForm()}
               type="submit"
             >
-              {isLoading ? <CircularProgress color="secondary" /> : <Typography>Login</Typography>}
+              {isLoading ? (
+                <CircularProgress color="secondary" />
+              ) : (
+                <Typography>Login</Typography>
+              )}
             </Button>
           </form>
           <Button

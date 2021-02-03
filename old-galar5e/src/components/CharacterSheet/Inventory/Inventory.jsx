@@ -17,7 +17,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   inventoryTableContainer: {
     height: '95%',
     overflowY: 'auto',
@@ -59,7 +59,7 @@ export default function Inventory(props) {
     setOpen(false);
   };
 
-  const handleNewItem = (e) => {
+  const handleNewItem = e => {
     setNewItem({ ...newItem, [e.target.name]: e.target.value });
   };
 
@@ -72,7 +72,7 @@ export default function Inventory(props) {
     setOpen(false);
   };
 
-  const editItem = (item) => {
+  const editItem = item => {
     setItemIndex(props.inventory.indexOf(item));
     const editingItem = {
       name: item.name,
@@ -93,7 +93,7 @@ export default function Inventory(props) {
     setOpen(false);
   };
 
-  const inventoryTable = inventory.map((row) => (
+  const inventoryTable = inventory.map(row => (
     <TableRow key={row.name}>
       <TableCell alight="right">
         <Button
@@ -106,7 +106,12 @@ export default function Inventory(props) {
         </Button>
       </TableCell>
       <TableCell alight="right">
-        <Button variant="outlined" color="primary" disableElevation onClick={() => editItem(row)}>
+        <Button
+          variant="outlined"
+          color="primary"
+          disableElevation
+          onClick={() => editItem(row)}
+        >
           <EditIcon />
         </Button>
       </TableCell>
@@ -121,7 +126,12 @@ export default function Inventory(props) {
       <TableContainer className={classes.inventoryTable} component={Paper}>
         <div className={classes.inventoryTableHeader}>
           <Typography variant="h6">Inventory</Typography>
-          <Button variant="outlined" color="primary" disableElevation onClick={handleClickOpen}>
+          <Button
+            variant="outlined"
+            color="primary"
+            disableElevation
+            onClick={handleClickOpen}
+          >
             Add Item
           </Button>
         </div>

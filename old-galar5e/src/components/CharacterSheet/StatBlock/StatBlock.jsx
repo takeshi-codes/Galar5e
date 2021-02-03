@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   statInterior: {
     display: 'grid',
     gridTemplateColumns: '1fr',
@@ -86,7 +86,11 @@ export default function StatBlock(props) {
             variant={textVariant}
             InputProps={inputProps}
           />
-          <Chip label={modifier} variant="outlined" className={classes.modifier} />
+          <Chip
+            label={modifier}
+            variant="outlined"
+            className={classes.modifier}
+          />
         </CardContent>
       </Card>
     </div>

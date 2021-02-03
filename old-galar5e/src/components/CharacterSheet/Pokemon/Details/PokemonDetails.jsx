@@ -29,7 +29,7 @@ import TmTable from '../../../../assets/tms.json';
 import '../Party.css';
 import StatBlock from './StatBlock';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   stats: {
     display: 'grid',
     gridTemplateColumns: 'repeat(6, 1fr)',
@@ -100,13 +100,15 @@ export default function PokemonDetails(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const inputLabel = React.useRef(null);
 
-  const fetchData = useCallback((abilityName) => {
+  const fetchData = useCallback(abilityName => {
     app
       .database()
       .ref('monstermanual/abilities')
-      .once('value', (snapshot) => {
+      .once('value', snapshot => {
         const data = snapshot.val();
-        const responseAbility = data.find((ability) => ability.name === abilityName);
+        const responseAbility = data.find(
+          ability => ability.name === abilityName
+        );
         if (responseAbility !== undefined) {
           setAbility(responseAbility.Description);
           setLoading(false);
@@ -121,7 +123,7 @@ export default function PokemonDetails(props) {
   ));
 
   const getTmMoves = () => {
-    const tmArray = pokemon.moves.tm.map((tm) => TmTable[tm]);
+    const tmArray = pokemon.moves.tm.map(tm => TmTable[tm]);
     const currentAttacks = [];
 
     for (const key of Object.keys(pokemon.moves.current)) {
@@ -181,9 +183,9 @@ export default function PokemonDetails(props) {
       app
         .database()
         .ref('monstermanual/moves')
-        .once('value', (snapshot) => {
+        .once('value', snapshot => {
           const data = snapshot.val();
-          const responseMove = data.find((attack) => attack.name === move.name);
+          const responseMove = data.find(attack => attack.name === move.name);
           if (responseMove !== undefined) {
             setAttackDetails(responseMove);
             setAttackLoading(false);
@@ -208,7 +210,7 @@ export default function PokemonDetails(props) {
     setPokemon(newPokemon);
   };
 
-  const deleteMove = (move) => {
+  const deleteMove = move => {
     setLoading(true);
     const newPokemon = { ...pokemon };
     const attacks = newPokemon.moves.current;
@@ -242,7 +244,7 @@ export default function PokemonDetails(props) {
                 label="Current PP"
                 type="number"
                 name="pp"
-                onChange={(e) => handleUpdateMove(e, move)}
+                onChange={e => handleUpdateMove(e, move)}
                 defaultValue={move.pp}
               />
               <TextField
@@ -296,7 +298,9 @@ export default function PokemonDetails(props) {
                 arrow
                 title={
                   <>
-                    <Typography color="inherit">This cannot be undone!</Typography>
+                    <Typography color="inherit">
+                      This cannot be undone!
+                    </Typography>
                   </>
                 }
               >
@@ -319,7 +323,7 @@ export default function PokemonDetails(props) {
     </ExpansionPanel>
   ));
 
-  const handleLearnType = (e) => {
+  const handleLearnType = e => {
     if (e.target.value === 'tm') {
       setAddMoves(true);
       setLearnType(e.target.value);
@@ -332,15 +336,17 @@ export default function PokemonDetails(props) {
     }
   };
 
-  const handleAddAttack = async (e) => {
+  const handleAddAttack = async e => {
     setLoading(true);
     setNewAttack(e.target.value);
     app
       .database()
       .ref('monstermanual/moves')
-      .once('value', (snapshot) => {
+      .once('value', snapshot => {
         const data = snapshot.val();
-        const responseMove = data.find((attack) => attack.name === e.target.value);
+        const responseMove = data.find(
+          attack => attack.name === e.target.value
+        );
         if (responseMove !== undefined) {
           const newMove = {
             name: responseMove.name,
@@ -389,16 +395,16 @@ export default function PokemonDetails(props) {
     setAddMoves(false);
   };
 
-  const calculateBonuses = useCallback((level) => {
+  const calculateBonuses = useCallback(level => {
     setProfBonus(LevelTable[level].prof);
     setStab(LevelTable[level].STAB);
   }, []);
 
-  const proficiencies = props.pokemon.proficiencies.map((proficiency, index) => (
-    <Typography key={index}>{proficiency}</Typography>
-  ));
+  const proficiencies = props.pokemon.proficiencies.map(
+    (proficiency, index) => <Typography key={index}>{proficiency}</Typography>
+  );
 
-  const handleOpenAbility = (event) => {
+  const handleOpenAbility = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -413,7 +419,7 @@ export default function PokemonDetails(props) {
   };
 
   const createAbilityList = useCallback(() => {
-    const newAbilityList = props.pokemon.abilities.map((ability) => ability);
+    const newAbilityList = props.pokemon.abilities.map(ability => ability);
     if (props.pokemon.hiddenAbility !== undefined) {
       newAbilityList.push(props.pokemon.hiddenAbility);
     }
@@ -421,7 +427,7 @@ export default function PokemonDetails(props) {
   }, [props.pokemon.abilities, props.pokemon.hiddenAbility]);
 
   const abilityMenu = abilityList.map((ability, index) => (
-    <MenuItem onClick={(event) => handleChangeAbility(event, index)} key={index}>
+    <MenuItem onClick={event => handleChangeAbility(event, index)} key={index}>
       {ability}
     </MenuItem>
   ));
@@ -621,7 +627,9 @@ export default function PokemonDetails(props) {
                   </>
                 }
               >
-                <Button onClick={handleOpenAbility}>{pokemon.currentAbility}</Button>
+                <Button onClick={handleOpenAbility}>
+                  {pokemon.currentAbility}
+                </Button>
               </Tooltip>
               <Menu
                 id="simple-menu"

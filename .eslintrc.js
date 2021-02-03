@@ -3,27 +3,29 @@ module.exports = {
     __PATH_PREFIX__: true,
     tw: true,
   },
-  parser: "babel-eslint",
+  parser: 'babel-eslint',
   extends: [
     `react-app`,
-    `eslint:recommended`,
-    `plugin:react/recommended`,
-    `plugin:prettier/recommended`,
+    `prettier`  
+  ],
+  plugins:[
+    'prettier',
+    'react'
   ],
   settings: {
     react: {
-      version: "detect",
+      version: 'detect',
     },
   },
   rules: {
-    "react/prop-types": 0,
-    "react/react-in-jsx-scope": "off",
-    "jsx-a11y/anchor-is-valid": [
-      "error",
+    'react/prop-types': 0,
+    'react/react-in-jsx-scope': 'off',
+    'jsx-a11y/anchor-is-valid': [
+      'error',
       {
-        components: ["Link"],
-        specialLink: ["hrefLeft", "hrefRight"],
-        aspects: ["invalidHref", "preferButton"],
+        components: ['Link'],
+        specialLink: ['hrefLeft', 'hrefRight'],
+        aspects: ['invalidHref', 'preferButton'],
       },
     ],
   },

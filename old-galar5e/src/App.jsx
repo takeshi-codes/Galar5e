@@ -20,7 +20,7 @@ const theme = createMuiTheme({
   },
 });
 
-const App = (props) => {
+const App = props => {
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +31,7 @@ const App = (props) => {
   const onLoad = () => {
     try {
       setLoading(true);
-      app.auth().onAuthStateChanged((user) => {
+      app.auth().onAuthStateChanged(user => {
         setLoading(false);
       });
     } catch (e) {
@@ -47,7 +47,7 @@ const App = (props) => {
     props.history.push('/login');
   };
 
-  const handleSpinner = (status) => {
+  const handleSpinner = status => {
     setLoading(status);
   };
 

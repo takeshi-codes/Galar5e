@@ -1,23 +1,48 @@
-## Galar 5e
+This is a [Next.js](https://nextjs.org/) project bootstrapped with
+[`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-The online companion to Pokemon 5e, the Pokemon homebrew system for Dungeons and
-Dragons 5e. Galar5e can track your trainer sheets, inventory, Pokemon, and your
-Pokedex!
+## Getting Started
 
-Check out and download the resources located at the
-[Pokemon 5e website](https://www.pokemon5e.com/) to get started playing!
+First, run the development server:
 
-Join the [Discord](https://discord.gg/Vx3ytcH) or
-[Reddit](https://www.reddit.com/r/Pokemon5e/) to join the Pokemon5e community.
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-Take Pokemon5e on the go with the
-[Pokedex5e](https://www.pokemon5e.com/#pokedex5e) Companion App, available on
-iOS and Android.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the
+result.
 
----
+You can start editing the page by modifying `pages/index.js`. The page
+auto-updates as you edit the file.
 
-Based on the original game by Satoshi Taijiri © Game Freak © Nintendo Company
-Inc.
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on
+[http://localhost:3000/api/hello](http://localhost:3000/api/hello). This
+endpoint can be edited in `pages/api/hello.js`.
 
-We do not claim ownership of anything related to Pokémon or Dungeons and
-Dragons. Please support the original source.
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are
+treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead
+of React pages.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
+  features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out
+[the Next.js GitHub repository](https://github.com/vercel/next.js/) - your
+feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the
+[Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
+from the creators of Next.js.
+
+Check out our
+[Next.js deployment documentation](https://nextjs.org/docs/deployment) for more
+details.

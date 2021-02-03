@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   grid: {
     minWidth: '100%',
   },
@@ -45,7 +45,8 @@ export default function AddPokemon(props) {
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="body1" gutterBottom className={classes.label}>
-            Take Pokemon5e on the go with the companion mobile app, available on iOS and Android
+            Take Pokemon5e on the go with the companion mobile app, available on
+            iOS and Android
           </Typography>
           <Button
             variant="contained"
@@ -61,7 +62,8 @@ export default function AddPokemon(props) {
       <Card className={classes.card}>
         <CardContent>
           <Typography variant="body1" gutterBottom className={classes.label}>
-            Pokemon 5e is created and made possible by JoeTheDM, host of You Meet In A Tavern
+            Pokemon 5e is created and made possible by JoeTheDM, host of You
+            Meet In A Tavern
           </Typography>
           <Button
             variant="contained"

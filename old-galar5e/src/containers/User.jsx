@@ -10,7 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import app from '../services/firebase';
 import { AuthContext } from '../Auth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   card: {
     margin: '0 auto',
     width: '50%',
@@ -38,7 +38,7 @@ export default function User(props) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleEmailSubmit = (event) => {
+  const handleEmailSubmit = event => {
     event.preventDefault();
     try {
       currentUser.updateEmail(email).then(() => {
@@ -59,7 +59,9 @@ export default function User(props) {
       .auth()
       .sendPasswordResetEmail(currentUser.email)
       .then(() => {
-        alert('An email has been sent containing the link to reset your password');
+        alert(
+          'An email has been sent containing the link to reset your password'
+        );
         setIsLoading(false);
       });
   };
@@ -85,7 +87,7 @@ export default function User(props) {
                 type="email"
                 label="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 variant="outlined"
                 name="email"
               />

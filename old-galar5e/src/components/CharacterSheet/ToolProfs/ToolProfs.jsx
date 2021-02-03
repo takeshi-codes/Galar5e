@@ -16,7 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolProfsTableHeader: {
     margin: theme.spacing(1),
   },
@@ -40,7 +40,7 @@ export default function ToolProfs(props) {
     setOpen(false);
   };
 
-  const handleNewItem = (e) => {
+  const handleNewItem = e => {
     setNewProf(e.target.value);
   };
 
@@ -84,7 +84,12 @@ export default function ToolProfs(props) {
           <TableBody>{toolProfTable}</TableBody>
         </Table>
       </TableContainer>
-      <Button variant="contained" color="primary" disableElevation onClick={handleClickOpen}>
+      <Button
+        variant="contained"
+        color="primary"
+        disableElevation
+        onClick={handleClickOpen}
+      >
         Add Proficiency
       </Button>
       <Dialog open={open} onClose={handleClose}>

@@ -9,7 +9,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import { AuthContext } from '../../Auth';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     marginBottom: theme.spacing(2),
@@ -52,7 +52,11 @@ export default function Header(props) {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title} onClick={navToHome}>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            onClick={navToHome}
+          >
             Galar 5e
           </Typography>
           {currentUser ? (

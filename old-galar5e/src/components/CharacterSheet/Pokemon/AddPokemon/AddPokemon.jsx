@@ -8,7 +8,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Pokedex from '../../../../assets/pokedex.json';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   card: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -50,8 +50,13 @@ export default function AddPokemon(props) {
           id="combo-box-demo"
           options={monsterManual}
           onChange={handleChangePokemon}
-          renderInput={(params) => (
-            <TextField {...params} label="Search..." variant="outlined" fullWidth />
+          renderInput={params => (
+            <TextField
+              {...params}
+              label="Search..."
+              variant="outlined"
+              fullWidth
+            />
           )}
         />
       </CardContent>
