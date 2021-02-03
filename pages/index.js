@@ -1,5 +1,5 @@
-import Nav from '../components/nav'
-import Footer from '../components/footer'
+import Nav from '../components/nav';
+import Footer from '../components/footer';
 
 const NextAuth = () => (
   <>
@@ -25,6 +25,6 @@ const NextAuth = () => (
     </main>
     <Footer />
   </>
-)
+);
 
-export default NextAuth
+export default NextAuth;
