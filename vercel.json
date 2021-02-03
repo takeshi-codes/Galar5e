@@ -4,7 +4,9 @@
       "MONGODB_URI": "@mongodb-uri",
       "GOOGLE_ID": "@google-id",
       "GOOGLE_SECRET": "@google-secret",
-      "NEXTAUTH_URL": "@nextauth-url"
+      "NEXTAUTH_URL": "@nextauth-url",
+      "DISCORD_CLIENT_ID": "@discord-client-id",
+      "DISCORD_CLIENT_SECRET": "@discord-client-secret"
     }
   }
 }
